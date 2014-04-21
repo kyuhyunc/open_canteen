@@ -3,7 +3,8 @@
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xhtml="http://www.w3.org/1999/xhtml"
      xmlns:xlink="http://www.w3.org/1999/xlink"
-     xmlns:a="http://www.adobe.com/svg10-extensions" a:timeline="independent">
+     xmlns:a="http://www.adobe.com/svg10-extensions" a:timeline="independent"
+     onload="top.load(evt)">
     
     <text x="500" y="100" style="font-size: 50px; text-anchor: middle">
         Open Canteen!
@@ -11,7 +12,7 @@
     
     <foreignObject x="250" y="150" width="500" height="550">
         <body xmlns="http://www.w3.org/1999/xhtml">
-            <form id="ingredients" action="cgi-bin/result.cgi" method="GET">
+            <form id="search_keys" action="cgi-bin/result.cgi" method="GET" onsubmit="return top.validateForm()">
                 <!-- <input type="hidden" name="redirect" value="http://ihome.ust.hk/~kchangaa/cgi-bin/result.pl" /> -->
                 <p><fieldset>
                     <legend>Food Type</legend>

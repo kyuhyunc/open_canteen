@@ -4,15 +4,11 @@ use strict;
 use CGI qw(:standard);
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 
-#use HTTP::Request::Common qw(POST);
-#use LWP::UserAgent;
-
-#use HTTP::Request::Common;
-#my $cgi = new CGI;
-#$cgi->header(-type=>"text/html");
-
 my @food_type = param('food_type');
 my $canteen = param('canteen');
+my $food_name = param('food_name');
+
+# Check if inputs have been selected/entered properly
 
 print header,
     start_html('Open Canteen:result'),
@@ -21,6 +17,8 @@ print header,
     "Selected Food Types: @food_type",
     p(),
     "Selected Canteen: $canteen",
+    p(),
+    "Name of Food: $food_name",
     p(),
     a({-href=>'/~kchangaa'}, "Go back to the main page."),
     end_html;
