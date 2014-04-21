@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="1000px" height="650px"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:a="http://www.adobe.com/svg10-extensions" a:timeline="independent"
+     onload="top.load(evt)">
+    
+    <text x="500" y="100" style="font-size: 50px; text-anchor: middle">
+        Open Canteen!
+    </text>
+    
+    <foreignObject x="250" y="200" width="500" height="550">
+        <body xmlns="http://www.w3.org/1999/xhtml">
+            <form id="ingredients" action="cgi-bin/result.pl" method="post">
+                <input type="hidden" name="redirect" value="http://ihome.ust.hk/~kchangaa/cgi-bin/result.pl" />
+                <p><fieldset>
+                    <legend>Food Type</legend>
+                    <input type="checkbox" name="soup_noodle" id="soup_noodle" value="soup_noodle"/>Soup Noodle
+                    <input type="checkbox" name="fried_noodle" id="fried_noodle" value="fried_noodle"/>Fried Noodle
+                    <input type="checkbox" name="rice" id="rice" value="rice"/>Rice
+                    <input type="checkbox" name="congee" id="congee" value="congee"/>Congee
+                </fieldset></p>
+                <p><fieldset>
+                    <legend>Which Canteen?</legend>
+                    <input type="radio" name="canteen" id="any" value="any"/>Any
+                    <input type="radio" name="canteen" id="canteen1" value="canteen1"/>Canteen1
+                    <input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2
+                </fieldset></p>
+                <input type="submit" value="submit"/>
+                <input type="reset" value="reset"/> 
+            </form>
+        </body>
+    </foreignObject>
+</svg>
