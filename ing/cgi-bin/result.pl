@@ -1,44 +1,20 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
+use strict;
 use CGI ':standard';
+use <meta charset="utf-8">;
+#use HTTP::Request::Common;
+$cgi = CGI->new();
+$cgi->header(-type=>"text/html");
+
+@food_type = param('food_type');
+@canteen = param('canteen');
 
 print header,
-  start_html('index_html'),
-   h1('Open Canteen!'),
-   hr,
-   img({-src=>'./intro.jpg'}),
-   hr,
-print_canteen_type();
-print_main_type();
-print end_html;
-
-#check condition
-print "$canteen_type";
-print "$main_type";
-sub print_canteen_type {
-    if (param) {
-  $canteen_type = 'any' if param('any');   
-	$canteen_type = 'meat' if param('meat');
-	$canteen_type = 'fish' if param('fish');
-	$canteen_type = 'chicken' if param('chicken');
-	$canteen_type = 'vegetarian' if param('vegetarian');
-    }
-}
-
-sub print_main_type {
-    print start_form,
-    "Which ingredient?: ",
-    checkbox(-name=>'any',-checked=>1),
-    checkbox(-name=>'meat',-checked=>1),
-    checkbox(-name=>'fish',-checked=>1),
-    checkbox(-name=>'chicken',-checked=>1),
-    checkbox(-name=>'vegetarian',-checked=>1),
-    p(),
-    "Which canteen?: ",
-    radio_group(-name=>'type',
-                -values=>['canteen1','canteen2']),
-    p(),
-    reset(-name=>'Reset'),
-    submit(-name=>'Set'),
-    end_form;
-}
+    start_html('Open Canteen:result'),
+    h1('Open Canteen!'),
+    hr,
+    "1111: $food_type",
+    "2222: $canteen",
+    a({-href=>'/'}, "Go back to the main page."),
+    end_html;
