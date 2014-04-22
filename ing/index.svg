@@ -14,12 +14,31 @@
         <body xmlns="http://www.w3.org/1999/xhtml">
             <form id="search_keys" action="cgi-bin/result.cgi" method="GET" onsubmit="return top.validateForm()">
                 <!-- <input type="hidden" name="redirect" value="http://ihome.ust.hk/~kchangaa/cgi-bin/result.pl" /> -->
-                <p><fieldset>
+                <p><fieldset class="button_style">
                     <legend>Food Type</legend>
-                    <input type="checkbox" name="food_type" id="soup_noodle" value="soup_noodle"/>Soup Noodle
-                    <input type="checkbox" name="food_type" id="fried_noodle" value="fried_noodle"/>Fried Noodle
-                    <input type="checkbox" name="food_type" id="rice" value="rice"/>Rice
+                    <input type="checkbox" name="food_type" id="any" value="any"/>Any 
+                    <input type="checkbox" name="food_type" id="soup_noodle" value="soup_noodle"/>Soup Noodle 
+                    <input type="checkbox" name="food_type" id="fried_noodle" value="fried_noodle"/>Fried Noodle 
+                    <input type="checkbox" name="food_type" id="rice" value="rice"/>Rice 
+                    <br/>
+                    <input type="checkbox" name="food_type" id="fried_rice" value="fried_rice"/>Fried Rice
                     <input type="checkbox" name="food_type" id="congee" value="congee"/>Congee
+                    <input type="checkbox" name="food_type" id="curry" value="curry"/>Curry
+                    <input type="checkbox" name="food_type" id="dish" value="dish"/>Dish
+                    <input type="checkbox" name="food_type" id="steak" value="steak"/>Steak
+                    <input type="checkbox" name="food_type" id="else" value="else"/>Else
+                </fieldset></p>
+                <p><fieldset>
+                    <legend>Main Ingredient</legend>
+                    <input type="radio" name="ingredient" id="any" value="any" checked="checked"/>Any
+                    <input type="radio" name="ingredient" id="beef" value="beef"/>Beef
+                    <input type="radio" name="ingredient" id="pork" value="pork"/>Pork
+                    <input type="radio" name="ingredient" id="chicken" value="chicken"/>Chicken
+                    <br/>
+                    <input type="radio" name="ingredient" id="duck" value="duck"/>Duck
+                    <input type="radio" name="ingredient" id="fish" value="fish"/>Fish
+                    <input type="radio" name="ingredient" id="vegetable" value="vegetable"/>Vegatable
+                    <input type="radio" name="ingredient" id="else" value="else"/>Else
                 </fieldset></p>
                 <p><fieldset>
                     <legend>Which Canteen?</legend>
@@ -30,7 +49,7 @@
                 <p><fieldset>
                     <legend>Name of Food (optional)</legend>
                     <label for="foodname">Name of Food:</label>
-                    <input type="text" name="foodname" id="foodname" size="60" value=""/>
+                    <input type="text" name="food_name" id="food_name" size="60" value=""/>
                 </fieldset></p>
                 <input type="submit" value="submit"/>
                 <input type="reset" value="reset"/> 

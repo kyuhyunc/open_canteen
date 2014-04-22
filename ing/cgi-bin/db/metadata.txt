@@ -1,12 +1,20 @@
 #
 # This file has data about food name, food type, and which cateen
 # 
-# FORMAT: id# / name / type / canteen#
-# EXAMPLE: 0 / BBQ pork over rice / rice meat pork / 1
+# FORMAT: id# / name / type / canteen# / main ingredient
+# EXAMPLE: 0 / BBQ pork over rice / rice meat pork / 1 / pork
+# 
+# Input Instruction
+# 1. id#: should be unique to each food
+# 2. name: enter them with white space (nothing special)
+# 3. type: should follow main page's preset values. UNDER SCORE INSTEAD OF WHITE SPACE (i.e. soup_noodle, fried_noodle etc)
+# 4. canteen#: should be either canteen1 or canteen2
+# 5. main ingredient: should follow mian page's values as well. (i.e. beef, pork, duck etc)
 #
 
-0 / yunnan+noodle / noddle / 1
-1 / BBQ+pork+over+rice / rice meat pork / 1
-2 / curry+rice+with+beef / rice curry beef / 2
-3 / teppan+steak / beef steak / 2
+0 / yunnan noodle / soup_noodle / canteen1 / beef
+1 / bbq pork over rice / rice / canteen1 / pork
+2 / curry rice with beef / curry / canteen2 / beef
+3 / teppan steak / steak / canteen2 / beef
+4 / spare ribs with noodle / soup_noodle / canteen1 / pork
 
