@@ -49,7 +49,7 @@
                 <div><fieldset>
                     <legend><strong>Name of Food</strong> (optional)</legend>
                     <label for="foodname">Name of Food:</label>
-                    <input type="text" name="food_name" id="food_name" size="100%" value=""/>
+                    <input type="text" name="food_name" id="food_name" style="width:100%" value=""/>
                 </fieldset></div><p/>
                 <input type="submit" value="submit"/>
                 <input type="reset" value="reset"/> 

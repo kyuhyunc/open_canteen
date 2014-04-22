@@ -82,6 +82,8 @@ print header,
         #-link => {'src' => '../open_canteen.css'},
         #-style => {-src => '../open_canteen.css'},
         #-onLoad => "do_alert($err_flag1); do_print($table_rows)"
+        #-base => '_parent',
+        -target => '_top',
         -onLoad => "do_alert($err_flag1)"
     ),
     #$cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen.css'}),  
