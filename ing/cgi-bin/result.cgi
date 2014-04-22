@@ -8,7 +8,23 @@ my @food_type = param('food_type');
 my $canteen = param('canteen');
 my $food_name = param('food_name');
 
-# Check if inputs have been selected/entered properly
+# First read metadata into an array
+
+
+# Check metadata comparing entered search keys
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 print header,
     start_html('Open Canteen:result'),
@@ -22,3 +38,5 @@ print header,
     p(),
     a({-href=>'/~kchangaa'}, "Go back to the main page."),
     end_html;
+
+

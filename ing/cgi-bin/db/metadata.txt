@@ -1,0 +1,37 @@
+# This file has data about food name, food type, and which cateen
+# Example
+# [ 
+#   id 0
+#   name BBQ pork over rice
+#   type rice meat pork
+#   canteen 1
+# ]
+
+[
+    id 0
+    name yunnan noodle
+    type noodle
+    canteen 1
+]
+
+[
+    id 1
+    name BBQ pork over rice
+    type rice meat pork
+    canteen 1
+]
+
+[
+    id 2
+    name curry rice with beef
+    type rice curry beef
+    canteen 2
+]
+
+[
+    id 3
+    name teppan steak
+    type beef steak
+    canteen 2
+]
+    
