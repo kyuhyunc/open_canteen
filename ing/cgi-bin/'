@@ -11,7 +11,6 @@ my $food_name = param('food_name');
 
 my $metadata; # variable to save metadata.txt in db directory
 my @table; # table to store data from metadata
-my $table_rows = 0; # number of rows in metadata
 my $err_flag1 = false; # to check if metadata file has opened succesfully
 
 # First read metadata into an array
@@ -19,12 +18,9 @@ open($metadata, "./db/metadata.txt") or ($err_flag1 = true);
 
 foreach my $line (<$metadata>) {
     chomp($line);
-    if($line =~ m@^[#\s].*@) { next; } # don't read if it is commented line or empty line
-    elsif($line =~ m@^[\d].*@) { # read line if starting with a number
-        my @new_row = split(/ \/ /, $line); # split the line by " / "
-        push @table, [@new_row];
-        $table_rows ++;
-    }
+    if($line =~ m/^#.*/) continue; # don't read if it is commented line
+    my @new_row = split / \/ /, $line; # split the line by " / "
+    push @table, [@new_row];
 }
 
 #print "!!!" + $err_flag1 + "\n";
@@ -36,7 +32,7 @@ print header,
     start_html(
         -title => 'Open Canteen:result1',
         -script => {-src => '../open_canteen.js'},
-        -onLoad => "do_alert($err_flag1); do_print($table_rows)"
+        -onLoad => "do_alert($err_flag1) do_print(@table)"
     ),
     h1('Open Canteen!'),
     hr,

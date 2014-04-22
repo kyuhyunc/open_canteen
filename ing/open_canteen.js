@@ -25,3 +25,17 @@ function validateForm()
         return false;
     }
 }
+
+function do_alert(err_flag)
+{
+    if (err_flag == 1) {
+        alert("Error has occured. Going back to the front page");
+        window.history.back();
+    }
+}
+
+// function to use for debugging
+function do_print(msg)
+{
+    alert(msg);
+}

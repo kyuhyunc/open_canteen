@@ -23,14 +23,14 @@
                 </fieldset></p>
                 <p><fieldset>
                     <legend>Which Canteen?</legend>
-                    <input type="radio" name="canteen" id="any" value="any"/>Any
+                    <input type="radio" name="canteen" id="any" value="any" checked="checked"/>Any
                     <input type="radio" name="canteen" id="canteen1" value="canteen1"/>Canteen1
                     <input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2
                 </fieldset></p>
                 <p><fieldset>
-                    <legend>Name of Food</legend>
+                    <legend>Name of Food (optional)</legend>
                     <label for="foodname">Name of Food:</label>
-                    <input type="text" name="foodname" id="foodname" value=""/>
+                    <input type="text" name="foodname" id="foodname" size="60" value=""/>
                 </fieldset></p>
                 <input type="submit" value="submit"/>
                 <input type="reset" value="reset"/> 
