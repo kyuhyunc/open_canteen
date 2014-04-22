@@ -80,7 +80,7 @@ print header,
         -title => 'Open Canteen:result1',
         -script => {-src => '../open_canteen.js'},
         #-link => {'src' => '../open_canteen.css'},
-        #-style => {-src => '../open_canteen.css'},
+        -style => {-src => '../open_canteen.css'},
         #-onLoad => "do_alert($err_flag1); do_print($table_rows)"
         -onLoad => "do_alert($err_flag1)"
     ),

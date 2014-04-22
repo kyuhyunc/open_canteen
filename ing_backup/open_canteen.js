@@ -55,4 +55,3 @@ function do_print(msg)
 {
     alert(msg);
 }
-
