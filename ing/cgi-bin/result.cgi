@@ -5,6 +5,8 @@ use constant { true => 1, false => 0 };
 use CGI qw(:all);
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 
+my $cgi = new CGI;
+
 my @food_type = param('food_type');
 my $ingredient = param('ingredient');
 my $canteen = param('canteen');
@@ -77,8 +79,8 @@ print header,
     start_html(
         -title => 'Open Canteen:result1',
         -script => {-src => '../open_canteen.js'},
-        -onLoad => "do_alert($err_flag1); do_print($table_rows)"
-#        -onLoad => "do_alert($err_flag1)"
+#        -onLoad => "do_alert($err_flag1); do_print($table_rows)"
+        -onLoad => "do_alert($err_flag1)"
     ),
     h1('Open Canteen!'),
     hr,
@@ -91,13 +93,23 @@ print header,
     "Name of Food: $food_name",
     hr;
 
+# print out filtered metadata
+print $cgi->start_table({-border=>''}),
+    caption({-align=>'LEFT'}, strong('List of Foods Based on Search Keys')),
+    $cgi->start_Tr({-align=>'CENTER', -valign=>'TOP'}),
+    th(['ID Number', 'Name', 'Type', 'Canteen Location', 'Main Ingredient']),
+    $cgi->end_Tr();
+
+for(my $i=0; $i<$table_rows; $i++) {
+    print $cgi->start_Tr(),
+        td({-align=>'CENTER', -valign=>'TOP'}, [$table[$i][0], $table[$i][1], $table[$i][2], $table[$i][3], $table[$i][4]]),
+        $cgi->end_Tr();
+}
+
+print $cgi->end_table(),
+    hr; 
+
 print
     a({-href=>'/~kchangaa'}, "Go back to the main page."),
     br;
     end_html;
-
-
-
-
-
-
