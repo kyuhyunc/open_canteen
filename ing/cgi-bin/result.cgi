@@ -8,23 +8,13 @@ my @food_type = param('food_type');
 my $canteen = param('canteen');
 my $food_name = param('food_name');
 
-# First read metadata into an array
+my $metadata; # variable to save metadata.txt in db directory
 
+# First read metadata into an array
+# Check how to pop an alert window on the webpage
+open($metadata, "./db/metadata.txt" ) or die ("Could not open the metadata \n");
 
 # Check metadata comparing entered search keys
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 print header,
     start_html('Open Canteen:result'),
@@ -37,6 +27,11 @@ print header,
     "Name of Food: $food_name",
     p(),
     a({-href=>'/~kchangaa'}, "Go back to the main page."),
+    br,
     end_html;
+
+
+
+
 
 
