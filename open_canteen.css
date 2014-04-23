@@ -14,6 +14,11 @@ h1, h2 {
     text-align: center;
 }
 
+h4 {
+    color:darkblue;
+    text-align:center;
+}
+
 legend {
     font-size: 18px;
 }
