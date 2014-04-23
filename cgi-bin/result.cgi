@@ -179,7 +179,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         end_form;
 
     print h3('Detail Information'),
-        "$table[$display_flag][1]",
+        "$display_flag",
         p(), hr;
 }
 
