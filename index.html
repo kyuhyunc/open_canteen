@@ -17,7 +17,7 @@
                 <h1>Open Canteen!</h1>
             </div> 
             <form id="search_keys" action="cgi-bin/result.cgi" method="GET" onsubmit="return validateForm()">
-                <fieldset>
+                <fieldset class="fieldset_front">
                     <legend><strong>Food Type</strong></legend>     
                     <div class="input_form"><input type="checkbox" name="food_type" id="any" value="any" checked="checked"/>Any</div>
                     <div class="input_form"><input type="checkbox" name="food_type" id="soup_noodle" value="soup_noodle"/>Soup Noodle</div>
@@ -28,8 +28,8 @@
                     <div class="input_form"><input type="checkbox" name="food_type" id="curry" value="curry"/>Curry</div>
                     <div class="input_form"><input type="checkbox" name="food_type" id="dish" value="dish"/>Dish</div>
                     <div class="input_form"><input type="checkbox" name="food_type" id="steak" value="steak"/>Steak</div>
-                </fieldset><p/>
-                <fieldset>
+                </fieldset>
+                <fieldset class="fieldset_front">
                     <legend><strong>Main Ingredient</strong></legend>
                     <div class="input_form"><input type="radio" name="ingredient" id="any" value="any" checked="checked"/>Any</div>
                     <div class="input_form"><input type="radio" name="ingredient" id="beef" value="beef"/>Beef</div>
@@ -39,29 +39,34 @@
                     <div class="input_form"><input type="radio" name="ingredient" id="fish" value="fish"/>Fish</div>
                     <div class="input_form"><input type="radio" name="ingredient" id="vegetable" value="vegetable"/>Vegatable</div>
                     <div class="input_form"><input type="radio" name="ingredient" id="else" value="else"/>Else</div>
-                </fieldset><p/>
-                <fieldset>
-                    <legend><strong>Which Canteen?</strong></legend>
-                    <div class="input_form"><input type="radio" name="canteen" id="any" value="any" checked="checked"/>Any</div>
-                    <div class="input_form"><input type="radio" name="canteen" id="canteen1" value="canteen1"/>Canteen1</div>
-                    <div class="input_form"><input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2</div>
-                </fieldset><p/>
-                <fieldset>
-                    <legend><strong>Food Name</strong> (optional)</legend>
-                    <div class="input_form">
-                        <input type="text" name="food_name" id="food_name" value=""/>
-                    </div>
                 </fieldset>
+                <div>
+                    <fieldset class="fieldset_front" style="display:inline;width:300px">
+                        <legend><strong>Which Canteen?</strong></legend>
+                        <div class="input_form"><input type="radio" name="canteen" id="any" value="any" checked="checked"/>Any</div>
+                        <div class="input_form"><input type="radio" name="canteen" id="canteen1" value="canteen1"/>Canteen1</div>
+                        <div class="input_form"><input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2</div>
+                    </fieldset>
+                    <fieldset class="fieldset_front" style="display:inline">
+                        <legend><strong>Food Name</strong> (optional)</legend>
+                        <div class="input_form">
+                            <input type="text" name="food_name" id="food_name" value=""/>
+                        </div>
+                    </fieldset>
+                </div>
+                <br/>
                 <div class="button"/>
-                    <input class="button" type="submit" value="submit"/>&nbsp;
+                    <input class="button" type="submit" value="submit"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input class="button" type="reset" value="reset"/>
                 </div>
             </form>
             <hr/>
-            <h2><a id="upload-link" href="#upload">upload food</a></h3>
+            <h2 style="margin-bottom: 0px;"><a id="upload-link" href="#upload">upload food</a></h2>
+            <h3 id="upload_description" style="color:darkblue;text-align:center;font-size:18px">click "upload food" to add a new food!</h3>
             <div id="upload" class="hidden">
-                <form id="upload" action="cgi-bin/upload.cgi" method="GET" ENCTYPE='multipart/form-data' onsubmit="return validateUpload()">
-                    <fieldset>
+
+                <form id="upload" action="cgi-bin/upload.cgi" method="GET" onsubmit="return validateUpload()">
+                    <fieldset class="fieldset_front">
                         <div class="input_fieldset">
                             <fieldset class="input_fieldset"><legend>Food Type</legend>
                             <select name="food_type_" id="food_type_">
@@ -90,29 +95,32 @@
                                 <div class="input_form"><input type="radio" name="canteen_" id="canteen2_" value="canteen2"/>Canteen2</div>
                             </fieldset>
                         </div>
+                        <br/>
                         <div>
-                            <fieldset class="input_fieldset2">
+                            <fieldset class="input_fieldset">
                                 <legend>Food Name</legend>
                                 <div class="input_form">
                                     <input type="text" name="food_name_" id="food_name_" value=""/>
                                 </div>
                             </fieldset>
-                            <fieldset class="input_fieldset2">
+                            <fieldset class="input_fieldset">
                                 <legend>Ingredients (optional)</legend>
                                 <div class="input_form">
                                     <input type="text" name="ingredients_" id="ingredients_" value=""/>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset class="input_fieldset">
                                 <legend>Picture (optional)</legend>
-                                <input type="file" name="photo"/>
+                                <div class="input_form">
+                                    <input type="file" name="photo"/>
+                                </div>
                             </fieldset>
                         </div>
+                        <br/>
                         <div class="button"/>
-                            <input class="button" type="submit" value="upload"/>&nbsp;
+                            <input class="button" type="submit" value="upload"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input class="button" type="reset" value="reset"/>
                         </div>
-                        </form>
                     </fieldset>
                 </form>
             </div>

@@ -4,6 +4,7 @@ $(document).ready( function() {
     // Expand upload form
     $('#upload-link').click( function() {
         $('#upload').toggle('slow');
+        $('#upload_description').toggle('slow');
         return false;
     });
 

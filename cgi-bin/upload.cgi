@@ -59,5 +59,6 @@ while (<$upload_filehandle>) {
 
 print header,
     start_html();
-print "<META http-equiv=\"refresh\" content=\"0;URL=../index.html\">";
+
+print "<META http-equiv=\"refresh\" content=\"0;URL=../\">";
 print end_html();
