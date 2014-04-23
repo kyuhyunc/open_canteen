@@ -1,0 +1,7 @@
+yunnan noodle | soup_noodle | canteen1 | beef
+noodle,yunnan 
+vegetable,noodle,soup 
+
+3.5
+good | 5 | kyu
+bad | 2 | shin

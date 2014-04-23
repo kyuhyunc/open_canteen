@@ -20,17 +20,19 @@ my $table_rows = 0; # number of rows in metadata
 my $err_flag = false; # to check if metadata file has opened succesfully
 
 # First read metadata into an array
-open($metadata, "./db/metadata.txt") or ($err_flag = true);
+open ($metadata, "../db/metadata.txt") or ($err_flag = true);
 
 foreach my $line (<$metadata>) {
     chomp($line);
     if($line =~ m@^[#\s].*@) { next; } # don't read if it is commented line or empty line
     elsif($line =~ m@^[\d].*@) { # read line if starting with a number
-        my @new_row = split(/ \/ /, $line); # split the line by " / "
+        my @new_row = split(/ \| /, $line); # split the line by " / "
         push @table, [@new_row];
         $table_rows ++;
     }
 }
+
+close $metadata;
 
 #print "!!!" + $err_flag + "\n";
 
@@ -128,18 +130,6 @@ for(my $i=0; $i<scalar @food_type; $i++) {
 print $cgi->end_table(),
     $cgi->end_fieldset();
 
-=comment
-print <<EOT;
-    <fieldset>
-        <legend><strong>Selected Keys</strong></legend>
-        Selected Food Types: "@food_type"
-        Selected Main Ingredient: "$ingredient"
-        Selected Canteen: "$canteen"
-        Name of Food: "$food_name"
-    </fieldset>
-EOT
-=cut
-
 # print out filtered metadata
 print h3('List of Foods Based on Search Keys'),
     #$cgi->start_table({-border=>'', -class=>'fixed'}),
@@ -180,7 +170,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
         end_form;
 
-    print h3('Detail Information');
+    print h3('Detail Information')'
         my $dishname = "$table[$display_flag][1]";
         my $file = "db/foods/$display_flag.txt";
         
@@ -354,7 +344,6 @@ elsif($display_flag =~ m/^[\d]*/) {
             print "<p> Could not open $file </p>";
             print "<p> $dishname is not in our database! <a href=\"../index.html#upload\"> Create new dish? </a> </p>";
         }
-
 }
 
 print a({-href=>'../'}, "Go back to the main page."),

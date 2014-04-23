@@ -18,6 +18,10 @@ legend {
     font-size: 18px;
 }
 
+fieldset {
+    border:0;
+}
+
 .hidden {
     display:none;
 }
@@ -25,6 +29,36 @@ legend {
 .input_form {
     white-space: nowrap;
     display:inline;
+}
+
+fieldset.input_fieldset {
+    width: 220px;
+    display:inline;
+}
+
+fieldset.input_fieldset2 {
+    width: 220px;
+    display:inline;
+}
+
+input.button {
+    width: 120px;
+    font-size: 16px;
+    padding: 5px;
+    background-color: #dcdcdc;
+    border: 1px solid #666;
+    color: #000;
+    text-decoration: none;
+    border-radius: 10px;
+    display:inline;
+}
+
+div.button {
+    text-align: center;
+}
+
+#food_name, #food_name_, #ingredients_ {
+    width:190px;
 }
 
 #container {
@@ -49,5 +83,6 @@ legend {
 #upload-link {
     text-decoration: none;
     color: black;
+    font-size: 28px;
 }
 
