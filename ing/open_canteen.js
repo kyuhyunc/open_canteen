@@ -1,15 +1,9 @@
-// The load function for the SVG document
-function load(evt) {
-    // Set the root node to the global variable
-    svgdoc = evt.target.ownerDocument;
-}
-
 // Check if inputs have been selected/entered properly
 function validateForm()
 {
-    var food_type = svgdoc.getElementsByName("food_type");
-    var ingredient = svgdoc.getElementsByName("ingredient");
-    var canteen = svgdoc.getElementsByName("canteen");
+    var food_type = document.getElementsByName("food_type");
+    var ingredient = document.getElementsByName("ingredient");
+    var canteen = document.getElementsByName("canteen");
     var err_flag1 = true;
     var err_flag2 = true;
     var err_flag3 = true;

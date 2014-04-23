@@ -1,4 +1,44 @@
-html, body {height: 100%; margin: 0; padding:0}
+html, body { min-height: 100%; }
+
+body { 
+    margin: 0 auto;
+    background: url('./images/canteen.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+h1 {
+    -webkit-margin-before: 0.2em;
+}
+
+legend {
+    font-size: 18px;
+}
+
+.check_box {
+    white-space: nowrap;display:inline
+}
+
+#container {
+    max-width: 600px;
+    min-width: 400px;
+    background-color: white;
+    background: rgba(255,255,255,0.7);
+    margin: 5% auto auto auto;
+    border-radius: 30px;
+}
+
+#content {
+    margin: 0 auto;
+    padding: 15px 20px 20px 20px;
+}
+
+#header {
+    font-size: 27px;
+    text-align: center;
+}
 
 .button_style {
     vertical-align: middle;
