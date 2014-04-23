@@ -1,7 +1,0 @@
-baked spaghetti with bolognaise and mushroom | dish | canteen2 | else
-sphagetti,bolognaise,baked
-mushroom,tomato
-
-4
-lots of mushroom! | 4 | mushroom-lover
-to-ma-to | 4 | tomato-lover

@@ -1,7 +1,0 @@
-bbq pork over rice | rice | canteen1 | pork
-pork,rice,bbq
-vegetable,rice
-
-3.5
-good | 5 | excellent
-omg | 2 | omg
