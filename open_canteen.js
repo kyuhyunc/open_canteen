@@ -42,6 +42,15 @@ function validateForm()
     }
 }
 
+function validateUpload()
+{
+    var food_name = document.getElementsByName("food_name_");
+    if (food_name[0].value == "") {
+        alert("Food name is missing");
+        return false;
+    }    
+}
+
 // check if metadata text file has been loaded succesfully
 function do_alert(err_flag)
 {
