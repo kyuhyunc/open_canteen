@@ -47,7 +47,7 @@
                     <div class="input_form"><input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2</div>
                 </fieldset><p/>
                 <fieldset>
-                    <legend><strong>Name of Food</strong> (optional)</legend>
+                    <legend><strong>Food Name</strong> (optional)</legend>
                     <div class="input_form">
                         <input type="text" name="food_name" id="food_name" value=""/>
                     </div>
@@ -60,7 +60,7 @@
             <hr/>
             <h2><a id="upload-link" href="#upload">upload food</a></h3>
             <div id="upload" class="hidden">
-                <form id="upload" action="cgi-bin/upload.cgi" method="GET" onsubmit="return validateInput()">
+                <form id="upload" action="cgi-bin/upload.cgi" method="GET" onsubmit="return validateUpload()">
                     <fieldset>
                         <div class="input_fieldset">
                             <fieldset class="input_fieldset"><legend>Food Type</legend>
@@ -86,22 +86,26 @@
                                 <option value="else">Else</option>
                             </select></fieldset> 
                             <fieldset class="input_fieldset"><legend>Canteen</legend>
-                                <div class="input_form"><input type="radio" name="canteen" id="canteen1" value="canteen1" checked="checked"/>Canteen1</div>
-                                <div class="input_form"><input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2</div>
+                                <div class="input_form"><input type="radio" name="canteen_" id="canteen1_" value="canteen1" checked="checked"/>Canteen1</div>
+                                <div class="input_form"><input type="radio" name="canteen_" id="canteen2_" value="canteen2"/>Canteen2</div>
                             </fieldset>
                         </div>
                         <div>
                             <fieldset class="input_fieldset2">
-                                <legend>Name of Food</legend>
+                                <legend>Food Name</legend>
                                 <div class="input_form">
                                     <input type="text" name="food_name_" id="food_name_" value=""/>
                                 </div>
                             </fieldset>
                             <fieldset class="input_fieldset2">
-                                <legend>Ingredients(optional)</legend>
+                                <legend>Ingredients (optional)</legend>
                                 <div class="input_form">
                                     <input type="text" name="ingredients_" id="ingredients_" value=""/>
                                 </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Picture (optional)</legend>
+                                
                             </fieldset>
                         </div>
                         <div class="button"/>

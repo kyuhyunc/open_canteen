@@ -18,7 +18,7 @@ my $table_rows = 0; # number of rows in metadata
 my $err_flag = false; # to check if metadata file has opened succesfully
 
 # First read metadata into an array
-open($metadata, "./db/metadata.txt") or ($err_flag = true);
+open($metadata, "../db/metadata.txt") or ($err_flag = true);
 
 foreach my $line (<$metadata>) {
     chomp($line);
