@@ -18,10 +18,6 @@ legend {
     font-size: 18px;
 }
 
-fieldset {
-    border:0;
-}
-
 .hidden {
     display:none;
 }
@@ -31,12 +27,12 @@ fieldset {
     display:inline;
 }
 
-fieldset.input_fieldset {
-    width: 220px;
-    display:inline;
+.fieldset_front {
+    border:0;
 }
 
-fieldset.input_fieldset2 {
+fieldset.input_fieldset {
+    border:0;
     width: 220px;
     display:inline;
 }

@@ -48,6 +48,5 @@ close $new_food;
 
 print header,
     start_html();
-print "<META http-equiv=\"refresh\" content=\"0;URL=http://ihome.ust.hk/~kchangaa\">";
-print "hello world";
+print "<META http-equiv=\"refresh\" content=\"0;URL=../\">";
 print end_html();
