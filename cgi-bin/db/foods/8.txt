@@ -1,0 +1,7 @@
+seasonal vegetable | else | canteen2 | vegetable
+seasonal
+
+
+2.5
+unpreditable taste | 3 | you
+not bad | 2 | vegetarian

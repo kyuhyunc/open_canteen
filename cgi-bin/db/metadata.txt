@@ -17,4 +17,11 @@
 2 / curry rice with beef / curry / canteen2 / beef
 3 / teppan steak / steak / canteen2 / beef
 4 / spare ribs with noodle / soup_noodle / canteen1 / pork
-
+5 / fried noodle in soya sauce / fried_noodle / canteen2 / vegetable
+6 / minced beef balls / else / canteen2 / beef
+7 / pan-fried turnip cake / else / canteen2 / else
+8 / seasonal vegetable / else / canteen2 / vegetable
+9 / new zealand steak / steak / canteen1 / beef
+10 / congee.Bbq pork bun / congee / canteen2 / pork
+11 / baked spaghetti with bolognaise and mushroom / dish / canteen2 / else
+12 / lemongrass chicken leg with flat noodle in "vietnam style" / soup_noodle / canteen2 / chicken
