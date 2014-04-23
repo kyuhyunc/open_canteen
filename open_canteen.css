@@ -32,12 +32,12 @@ fieldset {
 }
 
 fieldset.input_fieldset {
-    width: 180px;
+    width: 220px;
     display:inline;
 }
 
 fieldset.input_fieldset2 {
-    width: 200px;
+    width: 220px;
     display:inline;
 }
 
