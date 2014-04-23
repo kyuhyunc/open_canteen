@@ -1,7 +1,7 @@
-NAME | type | canteen | main ingredient
-ingredients, 
-img url
-average rating
-comment1 | rating | reviewer
-comment2 | rating | reviewer
-comment3 | rating | reviewer
+yunnan noodle | soup_noodle | canteen1 | beef
+noodle,yunnan 
+vegetable,noodle,soup 
+
+3.5
+good | 5 | kyu
+bad | 2 | shin

@@ -105,13 +105,15 @@
                             </fieldset>
                             <fieldset>
                                 <legend>Picture (optional)</legend>
-                                
+                                <form action="/cgi-bin/upload_image.cgi" method="post" enctype="multipart/form-data">
+                                <input type="file" name="photo"/>
                             </fieldset>
                         </div>
                         <div class="button"/>
                             <input class="button" type="submit" value="upload"/>&nbsp;
                             <input class="button" type="reset" value="reset"/>
                         </div>
+                        </form>
                     </fieldset>
                 </form>
             </div>
