@@ -56,8 +56,9 @@ binmode UPLOADFILE;
 while (<$upload_filehandle>) {
   print UPLOADFILE;
 }
+close UPLOADFILE;
 
 print header,
     start_html();
-print "<META http-equiv=\"refresh\" content=\"0;URL=../index.html">";
+print "<META http-equiv=\"refresh\" content=\"0;URL=../index.html\">";
 print end_html();
