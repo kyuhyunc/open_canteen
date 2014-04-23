@@ -16,9 +16,12 @@ my $type = param('food_type_');
 my $main_ingredient = param('ingredient_');
 my $canteen = param('canteen_');
 my $ingredients = param('ingredients_');
-my $pic_addr = $cgi->param('photo');
+my $pic_addr = param('photo');
+
 my ($file_name, $file_path, $file_extension) = fileparse ($pic_addr, '..*');
-$pic_addr = $file_name.$file_extension;
+my $pic_addr = $file_name.$file_extension; 
+
+my $UPLOADFILE; # use when uploading file. should check it later
 my $metadata; # variable to save metadata.txt in db directory
 my $new_food; # variable to create "id".txt file
 my $table_rows = 0; # number of rows in metadata
@@ -50,13 +53,13 @@ print $new_food "$upload_dir/$pic_addr\n";
 print $new_food "0\n";
 close $new_food;
 
-open (UPLOADFILE, ">$upload_dir/$pic_addr") or die "$!";
-binmode UPLOADFILE;
+open ($UPLOADFILE, ">$upload_dir/$pic_addr") or die "$!";
+binmode $UPLOADFILE;
 
 while (<$upload_filehandle>) {
-  print UPLOADFILE;
+  print $UPLOADFILE;
 }
-close UPLOADFILE;
+close $UPLOADFILE;
 
 print header,
     start_html();
