@@ -172,7 +172,7 @@ elsif($display_flag =~ m/^[\d]*/) {
 
     print h3('Detail Information');
         my $dishname = "$table[$display_flag][1]";
-        my $file = "db/foods/$display_flag.txt";
+        my $file = "../db/foods/$display_flag.txt";
         
         my @comments = ();
         my @keywords = ();
@@ -253,11 +253,11 @@ elsif($display_flag =~ m/^[\d]*/) {
                 my $comment = $raw_comment[0];
                 my $rating = $raw_comment[1];
                 my $recommend = $raw_comment[2];
-                my $reviewer = $raw_comment[3];
+                my $reviewer = $raw_comment[2];
                 
                 print "<li class=\"review\">";
                     print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                    print "<p class=\"recommended\"> Bottom line: $recommend </p>";
+                    #print "<p class=\"recommended\"> Bottom line: $recommend </p>";
                     print "<p class=\"comment\"> $comment </p>";
                     print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
                     print "<hr/>";
@@ -268,76 +268,57 @@ elsif($display_flag =~ m/^[\d]*/) {
             
             print hr;
         
-        print h4('Add a comment'),
-        start_form(-name => 'add_comment_form', -method => 'GET', -onSubmit => "return false;"),
-                "Your name: ", textfield(-name => '_name', -value => 'anon'),
-            p,
-                "Please rate this dish: ",
-            p,
-                radio_group(-name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
-            p,
-                "Would you recommend? ",
-            p,
-                radio_group(-name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
-            p,
+            print h4('Add a comment'),
+            start_form(-name => 'add_comment_form', -method => 'GET', -onSubmit => "add_comment();"),
+                    "Your name: ", textfield(-name => '_name', -value => 'anon'),
+                p,
+                    "Please rate this dish: ",
+                p,
+                    radio_group(-name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
+                p,
+                    "Would you recommend? ",
+                p,
+                    radio_group(-name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
+                p,
 
-                "Comments: ",
-            p,
-                textarea(-name => '_comment', -value => 'yum!', -cols => 40, -rows => 4),
-            p,
-            submit(-name=> '_submit', -value => 'Post Comment', -onClick => "add_comment();"),
-        end_form,
-        hr;
-
-        if (param('_submit')) {
+                    "Comments: ",
+                p,
+                    textarea(-name => '_comment', -value => 'yum!', -cols => 40, -rows => 4),
+                p,
+                submit(-name=> '_submit', -value => 'Post Comment'),
+            end_form,
+            hr;
+            
             print "yay";
-            my $reviewer = param('_name');
-            my $recommended = param('_recommend');
-            my $rating = param('_rating');
-            my $comment = param('_comment');
             
-            # add newest comment to list
-            my $new_comment_line = "$comment | $rating | $recommended | $reviewer";
-            push @comments, $new_comment_line;
-            
-            my $num_comments = @comments;
-            $avg_rating = $avg_rating; # re-calculate average rating
+            if (param('_submit')){
+                my $reviewer = param('_name');
+                my $recommended = param('_recommend');
+                my $rating = param('_rating');
+                my $comment = param('_comment');
 
-            # re-create data file, with new comment and updated average rating
-            open(OUTFILE, '>', $file) or die "Unable to update food rating";
-                print OUTFILE "$dishname\n";
-                print OUTFILE "$img_url\n";
-                print OUTFILE "$ingredients\n";
-                print OUTFILE "$keywords\n";
-                print OUTFILE "$avg_rating\n";
-                for (my $j = 0; $j < $num_comments; $j++){
-                    print OUTFILE "$comments[$j]\n";
-                }
-            close(OUTFILE);
+                # add newest comment to list
+                my $new_comment_line = "$comment | $rating | $recommended | $reviewer";
+                push @comments, $new_comment_line;
+
+                my $num_comments = @comments;
+                $avg_rating = $avg_rating; # re-calculate average rating
+
+                # re-create data file, with new comment and updated average rating
+                open(OUTFILE, '>', $file);
+                    print OUTFILE "$dishname\n";
+                    print OUTFILE "$img_url\n";
+                    print OUTFILE "$ingredients\n";
+                    print OUTFILE "$keywords\n";
+                    print OUTFILE "$avg_rating\n";
+                    for (my $j = 0; $j < $num_comments; $j++){
+                        print OUTFILE "$comments[$j]\n";
+                    }
+                    
+                close(OUTFILE);
+
+                }       
             
-            print "<h4> Comments on $dishname </h4>";
-            
-            # now display all the comments to the screen
-            print "<div> <h5> Comments: </h5>";
-            print "<ol id=\"list_of_comments\">";
-            for (my $i = 0; $i < $num_comments; $i++){
-                #extract the data from the flat file
-                my @raw_comment = split('\s?\|\s?', $comments[$i]);
-                my $comment = $raw_comment[0];
-                my $rating = $raw_comment[1];
-                my $recommend = $raw_comment[2];
-                my $reviewer = $raw_comment[3];
-                
-                print "<li class=\"review\">";
-                    print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                    print "<p class=\"recommended\"> Bottom line: $recommend </p>";
-                    print "<p class=\"comment\"> $comment </p>";
-                    print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
-                    print "<hr/>";
-                print "</li>";
-            }
-            print "</ol> </div>";
-        }
         
         }
         else { # if error opening file
