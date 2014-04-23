@@ -78,15 +78,19 @@ print header,
 #    qq(<script language="JavaScript" src="../open_canteen.js"></script>),
     start_html(
         -title=>'Open Canteen:result',
-        -script=>{-src => '../open_canteen.js'},
+        -script=>{-src=>'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'},
+        #-script=>{-src=>'../open_canteen.js'},
         #-link=>{'src' => '../open_canteen.css'},
         #-style=>{-src => '../open_canteen.css'},
         #-onLoad=>"do_alert($err_flag); do_print($table_rows)"
         #-base=>'_parent',
         -target=>'_top',
         -onLoad=>"do_alert($err_flag)"
-    ),
-    $cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen.css'}),
+    );
+
+print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
+
+print $cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen.css'}),
     
     $cgi->start_div({-id=>'container'}),
     $cgi->start_div({-id=>'content'}),
@@ -175,7 +179,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         end_form;
 
     print h3('Detail Information'),
-        "$table[$display_flag][1]",
+        "$display_flag",
         p(), hr;
 }
 

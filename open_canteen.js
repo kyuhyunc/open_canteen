@@ -1,3 +1,19 @@
+
+
+$(document).ready( function() {
+    // Expand upload form
+    $('#upload-link').click( function() {
+        $('#upload').toggle('slow');
+        return false;
+    });
+
+    // Expand detail information area
+    $('#display-link').click( function() {
+        $('#display').toggle('slow');
+        return false;
+    });
+});
+
 // Check if inputs have been selected/entered properly
 function validateForm()
 {

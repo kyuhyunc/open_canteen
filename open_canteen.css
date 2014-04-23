@@ -9,17 +9,56 @@ body {
     background-size: cover;
 }
 
-h1 {
+h1, h2 {
     -webkit-margin-before: 0.3em;
+    text-align: center;
 }
 
 legend {
     font-size: 18px;
 }
 
+fieldset {
+    border:0;
+}
+
+.hidden {
+    display:none;
+}
+
 .input_form {
     white-space: nowrap;
     display:inline;
+}
+
+fieldset.input_fieldset {
+    width: 180px;
+    display:inline;
+}
+
+fieldset.input_fieldset2 {
+    width: 200px;
+    display:inline;
+}
+
+input.button {
+    width: 120px;
+    font-size: 16px;
+    padding: 5px;
+    background-color: #dcdcdc;
+    border: 1px solid #666;
+    color: #000;
+    text-decoration: none;
+    border-radius: 10px;
+    display:inline;
+}
+
+div.button {
+    text-align: center;
+}
+
+#food_name, #food_name_, #ingredients_ {
+    width:190px;
 }
 
 #container {
@@ -33,11 +72,17 @@ legend {
 
 #content {
     margin: 0 auto;
-    padding: 15px 20px 20px 20px;
+    padding: 15px 20px 35px 20px;
 }
 
 #header {
     font-size: 27px;
     text-align: center;
+}
+
+#upload-link {
+    text-decoration: none;
+    color: black;
+    font-size: 28px;
 }
 
