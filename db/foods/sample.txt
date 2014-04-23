@@ -1,4 +1,5 @@
 NAME | type | canteen | main ingredient
+keywords, 
 ingredients, 
 img url
 average rating

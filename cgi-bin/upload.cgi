@@ -14,12 +14,14 @@ my $type = param('food_type_');
 my $main_ingredient = param('ingredient_');
 my $canteen = param('canteen_');
 my $ingredients = param('ingredients_');
+my $pic_addr = param('');
 
 my $metadata; # variable to save metadata.txt in db directory
+my $new_food; # variable to create "id".txt file
 my $table_rows = 0; # number of rows in metadata
 
-# First read metadata into an array
-open($metadata, "./db/metadata.txt");
+# First count current rows in metadata.txt
+open ($metadata, "../db/metadata.txt");
 
 foreach my $line (<$metadata>) {
     chomp($line);
@@ -28,17 +30,24 @@ foreach my $line (<$metadata>) {
         $table_rows ++;
     }
 }
-    
-    open (metadata, '>>./db/metadata.txt');
-    print metadata "$table_rows / $name / $type / $canteen / $ingredient\n";
-    close (metadata);
-    
-    open (new_food, ">./db/foods/$table_rows.txt");
-    print new_food "$name | $type | $canteen | $main_ingredient\n";
-    print new_food "$keywords\n";
-    print new_food "$ingredients\n";
-    print new_food "\n";
-    print new_food "0\n";
-    close (new_food);
-  }
+close $metadata;
+
+# Open metadata.txt to append the new row
+open ($metadata, ">>../db/metadata.txt");
+print $metadata "\n$table_rows | $name | $type | $canteen | $ingredients";
+
+close $metadata;
+
+# Create new txt file in foods folder
+open ($new_food, ">../db/foods/$table_rows.txt");
+print $new_food "$name | $type | $canteen | $main_ingredient\n";
+print $new_food "$ingredients\n";
+print $new_food "\n";
+print $new_food "0\n";
+close $new_food;
+
+print header,
+    start_html();
+print "<META http-equiv=\"refresh\" content=\"0;URL=http://ihome.ust.hk/~kchangaa\">";
+print "hello world";
 print end_html();
