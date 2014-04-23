@@ -69,6 +69,40 @@ function show_detail(id)
     return true;
 }
 
+function add_comment(){
+    alert("hi");
+    // validate form first
+    var reviewer_name = document.getElementsByName("_name")[0].value;
+    var recommendation = document.getElementsByName("_recommend")[0].value;
+    var rating = document.getElementsByName("_rating")[0].value;
+    var comment = document.getElementsByName("_comment")[0].value;
+    
+    alert(comment);
+    // check that something other than whitespace is entered for name and comment
+    var name_entered = reviewer_name.match(/\S/);
+    var comment_entered = comment.match(/\S/);
+    
+    if (!name_entered){
+        var leave_empty = confirm("No name entered. Leave review anonymously?");
+        if (!leave_empty){
+            return;
+        }
+    }
+    if (!comment_entered){
+        var leave_empty = confirm("Leave rating without a review?");
+        if (!leave_empty){
+            return;
+        }
+    }
+     
+    // add new comment
+    var add_comment = confirm("Add rating?");
+    if (add_comment){
+        alert("Added!");
+    }
+    return add_comment;
+}
+
 // function to use for debugging
 function do_print(msg)
 {

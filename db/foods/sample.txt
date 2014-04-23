@@ -1,8 +1,5 @@
-NAME | type | canteen | main ingredient
-keywords, 
-ingredients, 
+NAME
+keywords
+ingredients
 img url
-average rating
-comment1 | rating | reviewer
-comment2 | rating | reviewer
-comment3 | rating | reviewer
+0
