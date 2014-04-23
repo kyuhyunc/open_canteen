@@ -16,41 +16,42 @@
                 <h1>Open Canteen!</h1>
             </div> 
             <form id="search_keys" action="cgi-bin/result.cgi" method="GET" onsubmit="return validateForm()">
-                <div class="button_style"><fieldset>
+                <fieldset>
                     <legend><strong>Food Type</strong></legend>     
-                    <div class="check_box"><input type="checkbox" name="food_type" id="any" value="any"/>Any</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="soup_noodle" value="soup_noodle"/>Soup Noodle</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="fried_noodle" value="fried_noodle"/>Fried Noodle</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="rice" value="rice"/>Rice</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="fried_rice" value="fried_rice"/>Fried Rice</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="congee" value="congee"/>Congee</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="curry" value="curry"/>Curry</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="dish" value="dish"/>Dish</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="steak" value="steak"/>Steak</div>
-                    <div class="check_box"><input type="checkbox" name="food_type" id="else" value="else"/>Else</div>
-                </fieldset></div><p/>
-                <div><fieldset>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="any" value="any"/>Any</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="soup_noodle" value="soup_noodle"/>Soup Noodle</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="fried_noodle" value="fried_noodle"/>Fried Noodle</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="rice" value="rice"/>Rice</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="fried_rice" value="fried_rice"/>Fried Rice</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="congee" value="congee"/>Congee</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="curry" value="curry"/>Curry</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="dish" value="dish"/>Dish</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="steak" value="steak"/>Steak</div>
+                    <div class="input_form"><input type="checkbox" name="food_type" id="else" value="else"/>Else</div>
+                </fieldset><p/>
+                <fieldset>
                     <legend><strong>Main Ingredient</strong></legend>
-                    <div class="check_box"><input type="radio" name="ingredient" id="any" value="any" checked="checked"/>Any</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="beef" value="beef"/>Beef</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="pork" value="pork"/>Pork</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="chicken" value="chicken"/>Chicken</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="duck" value="duck"/>Duck</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="fish" value="fish"/>Fish</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="vegetable" value="vegetable"/>Vegatable</div>
-                    <div class="check_box"><input type="radio" name="ingredient" id="else" value="else"/>Else</div>
-                </fieldset></div><p/>
-                <div><fieldset>
+                    <div class="input_form"><input type="radio" name="ingredient" id="any" value="any" checked="checked"/>Any</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="beef" value="beef"/>Beef</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="pork" value="pork"/>Pork</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="chicken" value="chicken"/>Chicken</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="duck" value="duck"/>Duck</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="fish" value="fish"/>Fish</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="vegetable" value="vegetable"/>Vegatable</div>
+                    <div class="input_form"><input type="radio" name="ingredient" id="else" value="else"/>Else</div>
+                </fieldset><p/>
+                <fieldset>
                     <legend><strong>Which Canteen?</strong></legend>
-                    <div class="check_box"><input type="radio" name="canteen" id="any" value="any" checked="checked"/>Any</div>
-                    <div class="check_box"><input type="radio" name="canteen" id="canteen1" value="canteen1"/>Canteen1</div>
-                    <div class="check_box"><input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2</div>
-                </fieldset></div><p/>
-                <div><fieldset>
+                    <div class="input_form"><input type="radio" name="canteen" id="any" value="any" checked="checked"/>Any</div>
+                    <div class="input_form"><input type="radio" name="canteen" id="canteen1" value="canteen1"/>Canteen1</div>
+                    <div class="input_form"><input type="radio" name="canteen" id="canteen2" value="canteen2"/>Canteen2</div>
+                </fieldset><p/>
+                <fieldset>
                     <legend><strong>Name of Food</strong> (optional)</legend>
-                    <label for="foodname">Name of Food:</label>
-                    <input type="text" name="food_name" id="food_name" style="width:100%" value=""/>
-                </fieldset></div><p/>
+                    <div class="input_form">
+                        <input type="text" name="food_name" id="food_name" style="width:100%" value=""/>
+                    </div>
+                </fieldset><p/>
                 <input type="submit" value="submit"/>
                 <input type="reset" value="reset"/>
             </form>

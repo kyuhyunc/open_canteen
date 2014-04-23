@@ -77,62 +77,26 @@ if($ingredient ne "any") {
 print header,
 #    qq(<script language="JavaScript" src="../open_canteen.js"></script>),
     start_html(
-        -title=>'Open Canteen:result',
-        -script=>{-src => '../open_canteen.js'},
-        #-link=>{'src' => '../open_canteen.css'},
-        #-style=>{-src => '../open_canteen.css'},
-        #-onLoad=>"do_alert($err_flag); do_print($table_rows)"
-        #-base=>'_parent',
-        -target=>'_top',
-        -onLoad=>"do_alert($err_flag)"
+        -title => 'Open Canteen:result',
+        -script => {-src => '../open_canteen.js'},
+        -link => {'src' => '../open_canteen.css'},
+        #-style => {-src => '../open_canteen.css'},
+        #-onLoad => "do_alert($err_flag); do_print($table_rows)"
+        #-base => '_parent',
+        -target => '_top',
+        -onLoad => "do_alert($err_flag)"
     ),
-    $cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen.css'}),
-    
-    $cgi->start_div({-id=>'container'}),
-    $cgi->start_div({-id=>'content'}),
-    $cgi->div({-id=>'header'}, h1('Open Canteen!'));
-        
-print $cgi->start_fieldset(),
-    $cgi->start_legend(),
-    $cgi->start_strong(),
-    "Selected Keys",
-    $cgi->end_strong(),
-    $cgi->end_legend(),
-    $cgi->start_table({-width=>"100%"}),
-    $cgi->start_Tr({-align=>'CENTER', -valign=>'TOP'}),
-    th(['Food Types', 'Main Ingredient', 'Canteen', 'Name of Food']),
-    $cgi->end_Tr();
-
-for(my $i=0; $i<scalar @food_type; $i++) {
-    if($i==0) {
-        print $cgi->start_Tr(),
-            td({-align=>'CENTER', -valign=>'TOP'}, [$food_type[$i], $ingredient, $canteen, $food_name]),
-            $cgi->end_Tr();
-        if($food_type[0] eq "any") {
-            last;
-        }
-    }
-    else {
-        print $cgi->start_Tr(), 
-            td({-align=>'CENTER', -valign=>'TOP'}, [$food_type[$i], "", "", ""]),
-            $cgi->end_Tr();
-    }
-} 
- 
-print $cgi->end_table(),
-    $cgi->end_fieldset();
-
-=comment
-print <<EOT;
-    <fieldset>
-        <legend><strong>Selected Keys</strong></legend>
-        Selected Food Types: "@food_type"
-        Selected Main Ingredient: "$ingredient"
-        Selected Canteen: "$canteen"
-        Name of Food: "$food_name"
-    </fieldset>
-EOT
-=cut
+    #$cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen.css'}),  
+    h1('Open Canteen!'),
+    hr,
+    "Selected Food Types: @food_type",
+    p(),
+    "Selected Main Ingredient: $ingredient",
+    p(),
+    "Selected Canteen: $canteen",
+    p(),
+    "Name of Food: $food_name",
+    hr;
 
 # print out filtered metadata
 print h3('List of Foods Based on Search Keys'),
@@ -179,8 +143,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         p(), hr;
 }
 
-print a({-href=>'/~kchangaa'}, "Go back to the main page."),
+print
+    a({-href=>'/~kchangaa'}, "Go back to the main page."),
     br;
-    $cgi->end_div(),
-    $cgi->end_div(),
     end_html;
