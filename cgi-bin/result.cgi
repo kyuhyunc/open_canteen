@@ -269,7 +269,7 @@ elsif($display_flag =~ m/^[\d]*/) {
             print hr;
         
             print h4('Add a comment'),
-            start_form(-name => 'add_comment_form', -method => 'GET', -onSubmit => "add_comment();"),
+            start_form(-name => 'add_comment_form'),
                     "Your name: ", textfield(-name => '_name', -value => 'anon'),
                 p,
                     "Please rate this dish: ",
@@ -285,11 +285,9 @@ elsif($display_flag =~ m/^[\d]*/) {
                 p,
                     textarea(-name => '_comment', -value => 'yum!', -cols => 40, -rows => 4),
                 p,
-                submit(-name=> '_submit', -value => 'Post Comment'),
+                submit(-name=> '_submit', -value => 'Post Comment', -onClick => "alert('yay');"),
             end_form,
             hr;
-            
-            print "yay";
             
             if (param('_submit')){
                 my $reviewer = param('_name');
@@ -314,7 +312,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                     for (my $j = 0; $j < $num_comments; $j++){
                         print OUTFILE "$comments[$j]\n";
                     }
-                    
+                    print "success";
                 close(OUTFILE);
 
                 }       

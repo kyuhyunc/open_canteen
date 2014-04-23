@@ -60,7 +60,7 @@
             <hr/>
             <h2><a id="upload-link" href="#upload">upload food</a></h3>
             <div id="upload" class="hidden">
-                <form id="upload" action="cgi-bin/upload.cgi" method="GET" onsubmit="return validateUpload()">
+                <form id="upload" action="cgi-bin/upload.cgi" method="GET" ENCTYPE='multipart/form-data' onsubmit="return validateUpload()">
                     <fieldset>
                         <div class="input_fieldset">
                             <fieldset class="input_fieldset"><legend>Food Type</legend>

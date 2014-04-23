@@ -96,7 +96,7 @@ function add_comment(){
     if (add_comment){
         document.getElementById("add_comment_form");
     }
-    return false;
+    return add_comment;
 }
 
 // function to use for debugging
