@@ -170,7 +170,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
         end_form;
 
-    print h3('Detail Information')'
+    print h3('Detail Information');
         my $dishname = "$table[$display_flag][1]";
         my $file = "db/foods/$display_flag.txt";
         
