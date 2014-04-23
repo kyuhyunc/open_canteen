@@ -45,7 +45,8 @@ foreach my $line (<$metadata>) {
 }
 close $metadata;
 
-$pic_addr = $table_rows.$file_extension; # save pic_addr based on id number of a food
+#$pic_addr = "$table_rows.$file_extension"; # save pic_addr based on id number of a food
+$pic_addr = $file_name.$file_extension; # save pic_addr based on id number of a food
 
 # Open metadata.txt to append the new row
 open ($metadata, ">>../db/metadata.txt");
@@ -73,7 +74,7 @@ close $UPLOADFILE;
 print header,
     start_html(
       -script=>{-src=>'../open_canteen.js'},
-      -onLoad=>"do_alert($err_flag)"
+      #-onLoad=>"do_alert($err_flag)"
     );
 #print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
 print "<META http-equiv=\"refresh\" content=\"0;URL=../\">";
