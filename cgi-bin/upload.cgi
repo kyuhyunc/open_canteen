@@ -60,5 +60,6 @@ close UPLOADFILE;
 
 print header,
     start_html();
+
 print "<META http-equiv=\"refresh\" content=\"0;URL=../\">";
 print end_html();
