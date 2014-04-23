@@ -1,5 +1,4 @@
 pan-fried turnip cake | else | canteen2 | else
-pan,fried,turnip,cake
 turnip,cake
 
 5

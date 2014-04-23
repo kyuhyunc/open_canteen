@@ -1,5 +1,4 @@
 congee.Bbq pork bun | congee | canteen2 | pork
-bbq,bun
 rice,soup
 
 3

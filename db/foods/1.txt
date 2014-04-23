@@ -1,5 +1,4 @@
 bbq pork over rice | rice | canteen1 | pork
-pork,rice,bbq
 vegetable,rice
 
 3.5

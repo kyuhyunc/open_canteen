@@ -1,5 +1,4 @@
 minced beef balls | else | canteen2 | beef
-minced,balls
 
 
 1

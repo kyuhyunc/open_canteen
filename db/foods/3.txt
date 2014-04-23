@@ -1,5 +1,4 @@
 teppan steak | steak | canteen2 | beef
-teppan,steak,beef
 vegetable,potato
 
 3

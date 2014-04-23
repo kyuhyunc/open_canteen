@@ -1,5 +1,4 @@
 yunnan noodle | soup_noodle | canteen1 | beef
-noodle,yunnan 
 vegetable,noodle,soup 
 
 3.5

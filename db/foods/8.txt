@@ -1,6 +1,5 @@
 seasonal vegetable | else | canteen2 | vegetable
-seasonal
-
+seasonal,salad
 
 2.5
 unpreditable taste | 3 | you
