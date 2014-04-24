@@ -97,21 +97,43 @@ function add_comment(){
     
     var reviewer_name = document.getElementById('_reviewer_name').value;
     var comment = document.getElementById('_comment').value;
-    var rating = document.getElementById('_rating').value;
-    var recommend = document.getElementById('_recommend').value;
+    var rating_radio = document.getElementsByName('_rating');
+    var recommend_radio = document.getElementsByName('_recommend');
     var dishname = document.getElementsByName('food_name')[0].value;
-    // var avg = document.getElementById('_avg_rating').value;
     
-    if (!reviewer_name){
-        reviewer_name = "Anonymous";
+    
+    if (!comment){
+        alert("Please enter a comment");
+        return;
     }
     
-    var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommend +"\nComments: " + comment + "\n\nAdd review?";
+    if (!reviewer_name){
+        var anon = confirm("Leave review anonymously?");
+        if (anon) {
+            reviewer_name = "Anonymous";
+        }
+        else return;
+    }
+    
+    
+    var rating = 0;
+    for (var i=0; i < rating_radio.length; i++){
+      if (rating_radio[i].checked)
+        {
+        rating = rating_radio[i].value;
+        }
+    }
+    
+    var recommendation = "";
+    for (var i=0; i < recommend_radio.length; i++){
+      if (recommend_radio[i].checked)
+        {
+        recommendation = recommend_radio[i].value;
+        }
+    }
+    
+    var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommendation +"\nComments: " + comment + "\n\nAdd review?";
     var add_comment = confirm(confirmation_string);
-    // if (add_comment){
-        // alert(document.getElementById('avg_rating').innerHTML);
-        // document.getElementById('avg_rating').innerHTML = avg;
-    // }
     return add_comment;
 }
 
