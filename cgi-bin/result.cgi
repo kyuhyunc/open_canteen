@@ -232,6 +232,8 @@ elsif($display_flag =~ m/^[\d]*/) {
                 }
             close(READFILE);
             
+                
+                
             my $num_comments = @comments;
             
             print "<p> $dishname </p>";
@@ -240,6 +242,39 @@ elsif($display_flag =~ m/^[\d]*/) {
             #print "<p> Dish type: $food_type </p>";
             print "<p> Location: $canteen </p>";
             print "<p> Main ingredient: $ingredient </p>";
+            
+       
+            print h4('Add a comment'),
+            $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
+                hidden(-name =>'_id', -value => $display_flag),
+                hidden(-name =>'_file', -value => $file),
+                hidden(-name =>'_results_url', -value => $this_page),
+                hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
+                hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
+                hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
+                hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
+                hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
+                
+                p,
+                    "Your name: ", 
+                    $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
+                p,
+                    "Please rate this dish: ",
+                p,
+                    $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
+                p,
+                    "Would you recommend? ",
+                p,
+                    $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
+                p,
+
+                    "Comments: ",
+                p,
+                    $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
+                p,
+                    $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'),
+                $cgi->end_form,
+                hr;
             
             # now display all the comments to the screen
             $cgi->start_div({-id=>'comments'}),
@@ -261,42 +296,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                     print "<hr/>";
                 print "</li>";
             }
-            print "</ol>";
-            $cgi->end_div(); #end comments and comment form div
             
-       
-            print h4('Add a comment'),
-            $cgi->start_form(-id => 'display', -name => 'add_comment_form', -onSubmit => "add_comment()"),
-                hidden(-name =>'_id', -value => $display_flag),
-                hidden(-name =>'_file', -value => $file),
-                hidden(-name =>'_results_url', -value => $this_page),
-                hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
-                hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
-                hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
-                hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
-                hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
-                
-                p,
-                    "Your name: ", 
-                    $cgi->textfield(-name => '_reviewer_name', -value => ''),
-                p,
-                    "Please rate this dish: ",
-                p,
-                    $cgi->radio_group(-name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
-                p,
-                    "Would you recommend? ",
-                p,
-                    $cgi->radio_group(-name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
-                p,
-
-                    "Comments: ",
-                p,
-                    $cgi->textarea(-name => '_comment', -value => 'yum!', -cols => 40, -rows => 4),
-                p,
-                    $cgi->submit(-name=> '_submit', -value => 'Post Comment'),
-                $cgi->end_form,
-                hr;
-                
                 if ($cgi->param('_submit')){
                     
                     my $reviewer = $cgi->param('_reviewer_name');
@@ -321,12 +321,25 @@ elsif($display_flag =~ m/^[\d]*/) {
                         print OUTFILE "$avg_rating\n";
                         for (my $j = 0; $j < $num_comments; $j++){
                             print OUTFILE "$comments[$j]\n";
-                            print "$comments[$j]";
+                            #print "$comments[$j]";
                         }
                     close(OUTFILE);
                     
+                     print "<li class=\"review\">";
+                    print "<p class=\"rating\"> Rating: $rating / 5 </p>";
+                    #print "<p class=\"recommended\"> Bottom line: $recommend </p>";
+                    print "<p class=\"comment\"> $comment </p>";
+                    print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
+                    print "<hr/>";
+                print "</li>";
+                    
                 
                 }
+                
+                print "</ol>";
+            $cgi->end_div(); #end comments and comment form div
+            
+            
             
             
             
