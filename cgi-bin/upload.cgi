@@ -45,8 +45,9 @@ foreach my $line (<$metadata>) {
 }
 close $metadata;
 
+# save pic_addr based on id number of a food
 my $pic_name;
-$pic_name = $table_rows.$file_extension; # save pic_addr based on id number of a food
+$pic_name = $table_rows.$file_extension; 
 
 # Open metadata.txt to append the new row
 open ($metadata, ">>../db/metadata.txt");
@@ -64,6 +65,7 @@ close $new_food;
 
 # create the picture file into the target directory
 if ($pic_addr) { # execute this only file has loaded
+    chmod 0777, $upload_dir or ($err_flag = true); # change permission of image folder to upload the file
     open ($UPLOADFILE, ">$upload_dir/$pic_name") or ($err_flag = true);
     binmode $UPLOADFILE;
 
@@ -79,5 +81,5 @@ print header,
       -onLoad=>"do_alert($err_flag)"
     );
 #print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
-print "<META http-equiv=\"refresh\" content=\"0;URL=../\">";
+print "<META http-equiv=\"refresh\" content=\"0;URL=../index.html?flag=true\">";
 print end_html();

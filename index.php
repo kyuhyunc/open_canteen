@@ -14,11 +14,11 @@
     <link rel="stylesheet" type="text/css" href="open_canteen.css"/>
 </head>
 
-<body>
+<?php echo ($flag != NULL) ? '<body onload="check_redirect($flag)">' : '<body>'?>
     <div id="container">
         <div id="content">
             <div id="header">
-                <h1>Open Canteen! <?php echo 'test php' ?> </h1>
+                <h1>Open Canteen!</h1>
             </div> 
             <form id="search_keys" action="cgi-bin/result.cgi" method="GET" onsubmit="return validateForm()">
                 <fieldset class="fieldset_front">

@@ -71,8 +71,19 @@ function show_detail(id)
     return true;
 }
 
+function check_redirect(flag) {
+    if(flag==true) {
+        document.getElementById('upload').setAttribute("display", "block");
+        document.getElementById('upload_description').setAttribute("display", "none");
+    }
+    else {
+        document.getElementById('upload').setAttribute("display", "hidden");
+        document.getElementById('upload_description').setAttribute("display", "block");
+    }
+}
 
 function add_comment(){
+    alert("hi");
     // validate form first
     var form = document.getElementById('add_comment_form');
     var reviewer_name = document.getElementsByName("_reviewer_name")[0].value;
@@ -83,6 +94,7 @@ function add_comment(){
     var avg_rating = document.getElementsByName("_avg_rating")[0].value;
     var num_comments = document.getElementsByName("_num_comments")[0].value;
     
+    alert(comment);
     // check that something other than whitespace is entered for name and comment
     var name_entered = reviewer_name.match(/\S/);
     var comment_entered = comment.match(/\S/);
