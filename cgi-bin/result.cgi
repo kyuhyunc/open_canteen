@@ -150,7 +150,9 @@ print $cgi->end_table(),
     "Click a row to see the detail information",
     p(), hr; 
 
-# print out detail information of selected foo# print out detail information of selected foodd
+my $this_page = self_url;
+
+# print out detail information of selected food
 my $display_flag = param('detail_info'); #flag variable for displaying detail information of clicked food in the table
 if($display_flag eq '') {
     print start_form({-id=>'display'}),
@@ -163,6 +165,7 @@ if($display_flag eq '') {
 }
 elsif($display_flag =~ m/^[\d]*/) {
     print start_form({-id=>'display'}),
+        
         hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
         hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
         hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
@@ -170,7 +173,8 @@ elsif($display_flag =~ m/^[\d]*/) {
         hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
         end_form;
 
-    print h3('Detail Information');
+    $cgi->start_div(-id => 'detail', name => $display_flag);
+        print h3('Detail Information');
         my $dishname = "$table[$display_flag][1]";
         my $file = "../db/foods/$display_flag.txt";
         
@@ -178,14 +182,12 @@ elsif($display_flag =~ m/^[\d]*/) {
         my @keywords = ();
         my @ingredients = ();
         
-        
-        my $dishtype = "";
-        my $canteen = "";
-        my $mainingredient = "";
         my $img_url = "";
         my $keywords ="";
         my $ingredients = "";
         my $avg_rating = 0;
+        
+        my @raw_main_info = ();
             
         if (-e $file){ # if the file exists
             
@@ -207,30 +209,25 @@ elsif($display_flag =~ m/^[\d]*/) {
                     chomp $line;
                     switch($line_num){
                         case ($dishname_line){
-                            my @raw_main_info = split('\s?\|\s?', $line);
-                            
-                            $dishname = $raw_main_info[0];
-                            $dishtype = $raw_main_info[1];
-                            $canteen = $raw_main_info[2];
-                            $mainingredient = $raw_main_info[3];
+                            @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
                         }
                         case ($img_url_line){
-                            $img_url = $line;
+                            $img_url = "$line";
                         }
                         case ($ingredients_line){
-                            $ingredients = $line;
+                            $ingredients = "$line";
                             @ingredients = split(',', $line);
                             
                         }
                         case ($keywords_line){
-                            $keywords = $line;
+                            $keywords = "$line";
                             @keywords = split(',', $line);
                         }
                         case ($ratings_line){
                             $avg_rating = $line;
                         }
                         else{ # past all the food details
-                            push @comments, $line;
+                            push @comments, "$line";
                         }
                     }
                 }
@@ -239,14 +236,16 @@ elsif($display_flag =~ m/^[\d]*/) {
             my $num_comments = @comments;
             
             print "<p> $dishname </p>";
+            print "<img src=\"$img_url\"/>";
             print "<p> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
-            print "<p> Dish type: $dishtype </p>";
+            #print "<p> Dish type: $food_type </p>";
             print "<p> Location: $canteen </p>";
-            print "<p> Main ingredient: $mainingredient </p>";
+            print "<p> Main ingredient: $ingredient </p>";
             
             # now display all the comments to the screen
-            print "<div> <h5> Comments: </h5>";
-            print "<ol id=\"list_of_comments\">";
+            $cgi->start_div({-id=>'comments'}),
+            print "<h5> Comments: </h5>";
+            print "<ol id=\"comments_list\">";
             for (my $i = 0; $i < $num_comments; $i++){
                 #extract the data from the flat file
                 my @raw_comment = split('\s?\|\s?', $comments[$i]);
@@ -263,66 +262,83 @@ elsif($display_flag =~ m/^[\d]*/) {
                     print "<hr/>";
                 print "</li>";
             }
-            print "</ol> </div>";
+            print "</ol>";
+            $cgi->end_div(); #end comments and comment form div
             
-            
-            print hr;
-        
+       
             print h4('Add a comment'),
-            start_form(-name => 'add_comment_form'),
-                    "Your name: ", textfield(-name => '_name', -value => 'anon'),
+            $cgi->start_form(-id => 'display', -name => 'add_comment_form', -onSubmit => "add_comment()"),
+                hidden(-name =>'_id', -value => $display_flag),
+                hidden(-name =>'_file', -value => $file),
+                hidden(-name =>'_results_url', -value => $this_page),
+                hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
+                hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
+                hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
+                hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
+                hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
+                
+                p,
+                    "Your name: ", 
+                    $cgi->textfield(-name => '_reviewer_name', -value => ''),
                 p,
                     "Please rate this dish: ",
                 p,
-                    radio_group(-name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
+                    $cgi->radio_group(-name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
                 p,
                     "Would you recommend? ",
                 p,
-                    radio_group(-name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
+                    $cgi->radio_group(-name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
                 p,
 
                     "Comments: ",
                 p,
-                    textarea(-name => '_comment', -value => 'yum!', -cols => 40, -rows => 4),
+                    $cgi->textarea(-name => '_comment', -value => 'yum!', -cols => 40, -rows => 4),
                 p,
-                submit(-name=> '_submit', -value => 'Post Comment', -onClick => "alert('yay');"),
-            end_form,
-            hr;
+                    $cgi->submit(-name=> '_submit', -value => 'Post Comment'),
+                $cgi->end_form,
+                hr;
+                
+                if ($cgi->param('_submit')){
+                    
+                    my $reviewer = $cgi->param('_reviewer_name');
+                    my $recommended = $cgi->param('_recommend');
+                    my $rating = $cgi->param('_rating');
+                    my $comment = $cgi->param('_comment');
+
+                    # add newest comment to list
+                    #my $new_comment_line = "$comment | $rating | $recommended | $reviewer";
+                    my $new_comment_line = "$comment | $rating | $reviewer";
+                    push @comments, $new_comment_line;
+
+                    my $num_comments = @comments;
+                    $avg_rating = $avg_rating; # re-calculate average rating
+
+                    # re-create data file, with new comment and updated average rating
+                    open(OUTFILE, '>', $file);
+                        print OUTFILE "$dishname\n";
+                        print OUTFILE "$img_url\n";
+                        print OUTFILE "$ingredients\n";
+                        print OUTFILE "$keywords\n";
+                        print OUTFILE "$avg_rating\n";
+                        for (my $j = 0; $j < $num_comments; $j++){
+                            print OUTFILE "$comments[$j]\n";
+                            print "$comments[$j]";
+                        }
+                    close(OUTFILE);
+                    
+                
+                }
             
-            if (param('_submit')){
-                my $reviewer = param('_name');
-                my $recommended = param('_recommend');
-                my $rating = param('_rating');
-                my $comment = param('_comment');
-
-                # add newest comment to list
-                my $new_comment_line = "$comment | $rating | $recommended | $reviewer";
-                push @comments, $new_comment_line;
-
-                my $num_comments = @comments;
-                $avg_rating = $avg_rating; # re-calculate average rating
-
-                # re-create data file, with new comment and updated average rating
-                open(OUTFILE, '>', $file);
-                    print OUTFILE "$dishname\n";
-                    print OUTFILE "$img_url\n";
-                    print OUTFILE "$ingredients\n";
-                    print OUTFILE "$keywords\n";
-                    print OUTFILE "$avg_rating\n";
-                    for (my $j = 0; $j < $num_comments; $j++){
-                        print OUTFILE "$comments[$j]\n";
-                    }
-                    print "success";
-                close(OUTFILE);
-
-                }       
             
-        
+            
         }
         else { # if error opening file
             print "<p> Could not open $file </p>";
             print "<p> $dishname is not in our database! <a href=\"../index.html#upload\"> Create new dish? </a> </p>";
         }
+        
+    $cgi->end_div(); #end detail div
+        
 }
 
 print a({-href=>'../'}, "Go back to the main page."),

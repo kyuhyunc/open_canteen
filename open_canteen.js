@@ -70,9 +70,10 @@ function show_detail(id)
     return true;
 }
 
+
 function add_comment(){
     // validate form first
-    var reviewer_name = document.getElementsByName("_name")[0].value;
+    var reviewer_name = document.getElementsByName("_reviewer_name")[0].value;
     var comment = document.getElementsByName("_comment")[0].value;
     
     // check that something other than whitespace is entered for name and comment
@@ -95,8 +96,28 @@ function add_comment(){
     // add new comment
     var add_comment = confirm("Add rating?");
     if (add_comment){
-        document.getElementById("add_comment_form");
+        // var id = document.getElementsByName("_id")[0].value;
+        // var url = document.getElementsByName("_results_url")[0].value;
+        //show_detail(id);
+        //window.location.replace(url);
+    
+        
+        var comments_list = document.getElementById('comments_list');
+        var new_comment_node = document.createElement('li');
+        new_comment_node.setAttribute("class", "review");
+        
+        var content = "<p class=\"rating\"> Rating: $rating / 5 </p>";
+        //content = content.concat("<p class=\"recommended\"> Bottom line: $recommend </p>");
+        // print "<p class=\"comment\"> $comment </p>";
+        // print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
+        // print "<hr/>";
+        // print "</li>";
+        
+        new_comment_node.innerHTML = content;
+        comments_list.appendChild(new_comment_node);
+        
     }
+
     return add_comment;
 }
 
