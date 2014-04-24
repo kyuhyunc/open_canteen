@@ -1,0 +1,4 @@
+oatmeal with egg white | rice | canteen2 | vegetable
+oatmeal,egg
+soup,oat,rice
+
