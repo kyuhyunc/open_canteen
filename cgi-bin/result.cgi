@@ -78,6 +78,8 @@ if($ingredient ne "any") {
     }        
 }
 
+
+
 print header,
 #    qq(<script language="JavaScript" src="../open_canteen.js"></script>),
     start_html(
@@ -100,6 +102,51 @@ print $cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen
     $cgi->start_div({-id=>'content'}),
     $cgi->div({-id=>'header'}, h1('Open Canteen!'));
         
+        
+        
+# add new comment to file on submit
+if ($cgi->param('_submit_comment') && $cgi->param('flat_comments') && $cgi->param('file_name')){
+    
+    
+    
+    my $flat_comments = $cgi->param('flat_comments');
+    my @comments = split('~~~---~~~', $flat_comments);
+    
+    my $file = $cgi->param('file_name');
+    my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
+    my $recommended = $cgi->param('_recommend');
+    my $rating = $cgi->param('_rating');
+    my $comment = $cgi->param('_comment');
+    my $first_two_lines = $cgi->param('output_file_basic_info');
+    my $num_comments = @comments;
+    
+    # add newest comment to list
+    my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
+    
+     # print p,  $num_comments;
+     # print p, $flat_comments;
+     # print p, $new_comment_line;
+    
+    # re-create data file with new comment
+    # open(OUTFILE, '>', $file) || die;
+        # print OUTFILE "$first_two_lines";
+        # for (my $j = 0; $j < $num_comments; $j++){
+            # print OUTFILE "$comments[$j]\n";
+            # # print "<p>$comments[$j]</p>";
+        # }
+        # print OUTFILE "$new_comment_line";
+    # close(OUTFILE);
+    
+    # APPEND new comment to data
+    open(APPENDFILE, '>>', $file) || die;
+        print APPENDFILE "$new_comment_line\n";
+        #print h1("e");
+    close(APPENDFILE);
+}
+
+
+
+
 print $cgi->start_fieldset(),
     $cgi->start_legend(),
     $cgi->start_strong(),
@@ -177,11 +224,8 @@ elsif($display_flag =~ m/^[\d]*/) {
         my $file = "../db/foods/$display_flag.txt";
         
         my @comments = ();
-        # my @keywords = ();
         my @ingredients = ();
         
-        my $img_url = "../db/images/$display_flag.jpg";
-        # my $keywords ="";
         my $ingredients = "";
         my $avg_rating = 0;
         
@@ -201,6 +245,9 @@ elsif($display_flag =~ m/^[\d]*/) {
             my $temp_canteen = "";
             my $temp_main_ingredient = "";
             
+            # to pass through params for writing the outfile later
+            my $flat_comments =""; 
+            
             open(READFILE, '<', $file) || die;
                 while(my $line = <READFILE>){
                     $line_num++;
@@ -218,6 +265,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                             
                         }
                         else{ # past all the food details
+                            $flat_comments = $flat_comments."~~~---~~~".$line; #concat all the comments together
                             push @comments, "$line";
                             my @raw_comment = split('\s?\|\s?', "$line");
                             my $rating = $raw_comment[1];
@@ -232,12 +280,16 @@ elsif($display_flag =~ m/^[\d]*/) {
             my $num_comments = @comments;
             
             print $cgi->start_div({-id => 'basic_information'});
-            print "<p class=\"food_name\"> $dishname </p>";
+            
+            print p({-class=>'food_name'}, $dishname );
+            
+            
+            my $img_url = "../db/images/$display_flag.jpg";
             if (-e $img_url){
-                print "<img src=\"$img_url\" class=\"dish_img\"/>";
+                print img {-src=> $img_url, -class=> 'dish_img'};
             }
             else{
-                print "No image provided. Upload a photo?";
+                print p, "No image provided. Upload a photo?";
             }
             
             
@@ -250,12 +302,15 @@ elsif($display_flag =~ m/^[\d]*/) {
                 print p({-id=>'avg_rating'}, 'User rating: No ratings available! Be the first to leave your review below');
 
             }
-            print "<p> Dish type: $temp_type </p>";
-            print "<p> Location: $temp_canteen </p>";
-            print "<p> Main ingredient: $temp_main_ingredient </p>";
+            print p('Dish type: ', $temp_type);
+            print p('Location: ', $temp_canteen);
+            print p('Main ingredient: ', $temp_main_ingredient);
+            
             print $cgi->end_div(), hr;
                 
-       
+            
+            my $basic_info = "$dishname | $temp_type | $temp_canteen | $temp_main_ingredient \n$ingredients\n";
+            
             print $cgi->start_div({-id=>'add_comment'});
                 print h4('Add a comment');
             
@@ -267,6 +322,11 @@ elsif($display_flag =~ m/^[\d]*/) {
                     hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
                     hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
                     hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
+                    
+                    # the information to write data to the file on reload
+                    hidden(-name=>'file_name', -id=>'file_name', -value=>$file),
+                    hidden(-name=>'flat_comments', -id=>'flat_comments', -value=>$flat_comments),
+                    hidden(-name=>'output_file_basic_info', -id=>'output_file_basic_info', -value=>$basic_info),
                     
                     p,
                         "Please rate this dish: ",
@@ -285,7 +345,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                         "Your name: ", 
                         $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
                     p,
-                        $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment');
+                        $cgi->submit(-id => '_submit_comment', -name=> '_submit_comment', -value => 'Post Comment');
                         
                         
                     # recalculate average rating if the user submits a new review
@@ -329,48 +389,13 @@ elsif($display_flag =~ m/^[\d]*/) {
                         );
                     }
                 } # end for loop for comments
-            
-                # add new comment to file on submit
-                if ($cgi->param('_submit')){
-                    
-                    my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
-                    my $recommended = $cgi->param('_recommend');
-                    my $rating = $cgi->param('_rating');
-                    my $comment = $cgi->param('_comment');
-
-                    # add newest comment to list
-                    my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
-                    push @comments, $new_comment_line;
-
-                    # re-create data file, with new comment and updated average rating
-                    open(OUTFILE, '>', $file) || die;
-                        print OUTFILE "$dishname | $temp_type | $temp_canteen | $temp_main_ingredient \n";
-                        print OUTFILE "$ingredients\n";
-                        for (my $j = 0; $j < $num_comments + 1; $j++){
-                            print OUTFILE "$comments[$j]\n";
-                            # print "$comments[$j]";
-                        }
-                    close(OUTFILE);
-                    
-                    # print newest comment to display on browser
-                     print li({-class=>'review'}, 
-                            p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
-                            p({-class=>'recommended'}, 'Bottom Line ', $recommended),
-                            p({-class=>'comment'}, $comment),
-                            p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
-                            hr
-                        );
-                    
-                
-                }
                 
                 print "</ol>";
             $cgi->end_div(); #end "comments" div
             
         }
         else { # if error opening file
-            print "<p> Could not open $file </p>";
-            print "<p> $dishname is not in our database! <a href=\"../index.html#upload\"> Create new dish? </a> </p>";
+            print p('Could not open ', $file);
         }
         
     $cgi->end_div(); #end detail div
