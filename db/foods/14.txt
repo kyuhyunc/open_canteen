@@ -1,0 +1,4 @@
+roasted duck with rice | rice | canteen1 | duck
+roasted,duck
+soya sauce,vegetable
+
