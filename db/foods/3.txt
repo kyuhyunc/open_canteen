@@ -1,6 +1,4 @@
 teppan steak | steak | canteen2 | beef
 vegetable,potato
-
-3
 nice! | 3 | man
 not bad! | 3 | women

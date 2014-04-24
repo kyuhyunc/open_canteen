@@ -1,6 +1,4 @@
 pan-fried turnip cake | else | canteen2 | else
 turnip,cake
-
-5
 sweet | 5 | psycho
 good desert | 5 | me

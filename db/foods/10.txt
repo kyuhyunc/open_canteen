@@ -1,6 +1,4 @@
-congee.Bbq pork bun | congee | canteen2 | pork
+congee bbq pork bun | congee | canteen2 | pork
 rice,soup
-
-3
 good for breakfast | 4 | mm
 smooth | 2 | human

@@ -1,6 +1,4 @@
 minced beef balls | else | canteen2 | beef
-
-
-1
+beef
 no way | 1 | stranger
 why do you eat this ? | 1 | alien
