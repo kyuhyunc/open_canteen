@@ -104,7 +104,7 @@ function add_comment(){
     
     if (!comment){
         alert("Please enter a comment");
-        return;
+        return false;
     }
     
     if (!reviewer_name){
@@ -112,7 +112,7 @@ function add_comment(){
         if (anon) {
             reviewer_name = "Anonymous";
         }
-        else return;
+        else return false;
     }
     
     
