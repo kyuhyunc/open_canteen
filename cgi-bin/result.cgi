@@ -235,7 +235,7 @@ elsif($display_flag =~ m/^[\d]*/) {
             my $num_comments = @comments;
             
             print "<p> $dishname </p>";
-            print "<img src=\"$img_url\"/>";
+            print "<img src=\"$img_url\" width=\"200\" height=\"200\" class=\"food_img\"/>";
             print "<p> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
             #print "<p> Dish type: $food_type </p>";
             print "<p> Location: $canteen </p>";
