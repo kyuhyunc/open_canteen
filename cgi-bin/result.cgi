@@ -276,13 +276,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                     p,
                         "Please rate this dish: ",
                     p,
-                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3');
-                        
-                    # recalculate average rating if the user submits a new review
-                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);                    
-                    
-                print $cgi->hidden(-name=>'avg_rating', -id=>'avg_rating', -value=>$avg_rating),
-            
+                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
                     p,
                         "Would you recommend? ",
                     p,
@@ -293,16 +287,23 @@ elsif($display_flag =~ m/^[\d]*/) {
                     p,
                         $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
                     p,
-                        $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'),
-                    $cgi->end_form,
+                        $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment');
+                        
+                        
+                    # recalculate average rating if the user submits a new review
+                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);                    
+                    
+                    print $cgi->hidden(-name=>'avg_rating', -id=>'avg_rating', -value=>$avg_rating);
+                
+                    print $cgi->end_form,
                 hr;
             print $cgi->end_div();
             
             # now display all the comments to the screen
             
-            print $cgi->start_div({-id=>'comments'});
-                print h5('Comments and Reviews');
-                print "<ol id=\"comments_list\">";
+            print $cgi->start_div({-id=>'comments'}),
+                h5('Comments and Reviews'),
+                "<ol id=\"comments_list\">";
                 for (my $i = 0; $i < $num_comments; $i++){
                     #extract the data from the flat file
                     my @raw_comment = split('\s?\|\s?', $comments[$i]);
@@ -311,15 +312,23 @@ elsif($display_flag =~ m/^[\d]*/) {
                     my $reviewer = $raw_comment[2];
                     my $recommend = $raw_comment[3] || 0; # our data files don't all have this field due to format change
                     
-                    print "<li class=\"review\">";
-                        print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                        if ($recommend){
-                            print "<p class=\"recommended\"> Bottom line: $recommend </p>";
-                        }
-                        print "<p class=\"comment\"> $comment </p>";
-                        print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
-                        print "<hr/>";
-                    print "</li>";
+                    if ($recommend){
+                        print li( {-class=>'review'}, 
+                            p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
+                            p({-class=>'recommended'}, 'Bottom Line ', $recommend),
+                            p({-class=>'comment'}, $comment),
+                            p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
+                            hr
+                        );
+                    }
+                    else{
+                        print li({-class=>'review'}, 
+                            p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
+                            p({-class=>'comment'}, $comment),
+                            p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
+                            hr
+                        );
+                    }
                 }
             
                 if ($cgi->param('_submit')){
@@ -330,13 +339,8 @@ elsif($display_flag =~ m/^[\d]*/) {
                     my $comment = $cgi->param('_comment');
 
                     # add newest comment to list
-                    #my $new_comment_line = "$comment | $rating | $recommended | $reviewer";
                     my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
                     push @comments, $new_comment_line;
-
-
-                    # recalculate avg rating
-                    $avg_rating = (($avg_rating * $num_comments) + $rating)/ ($num_comments+1);
 
                     # re-create data file, with new comment and updated average rating
                     open(OUTFILE, '>', $file);
@@ -345,17 +349,17 @@ elsif($display_flag =~ m/^[\d]*/) {
                         # print OUTFILE "$keywords\n";
                         for (my $j = 0; $j < $num_comments; $j++){
                             print OUTFILE "$comments[$j]\n";
-                            #print "$comments[$j]";
+                            print "$comments[$j]";
                         }
                     close(OUTFILE);
                     
-                     print "<li class=\"review\">";
-                        print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                        print "<p class=\"recommended\"> Bottom line: $recommended </p>";
-                        print "<p class=\"comment\"> $comment </p>";
-                        print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
-                        print "<hr/>";
-                    print "</li>";
+                     print li({-class=>'review'}, 
+                            p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
+                            p({-class=>'recommended'}, 'Bottom Line ', $recommended),
+                            p({-class=>'comment'}, $comment),
+                            p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
+                            hr
+                        );
                     
                 
                 }
