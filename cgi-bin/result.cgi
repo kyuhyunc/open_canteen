@@ -194,12 +194,9 @@ elsif($display_flag =~ m/^[\d]*/) {
             
             my $line_num = 0;                    
             
-            # info about the text file
+            # text file format information
             my $dishname_line = 1;
-            my $img_url_line = 3;
             my $ingredients_line = 2;
-            # my $keywords_line = 0;
-            my $ratings_line = 4;
 
 
             my $temp_type = "";
@@ -218,21 +215,11 @@ elsif($display_flag =~ m/^[\d]*/) {
                             $temp_canteen = $raw_main_info[2];
                             $temp_main_ingredient = $raw_main_info[3];
                         }
-                         case ($img_url_line){
-                            # $img_url = "$line";
-                         }
                         case ($ingredients_line){
                             $ingredients = "$line";
                             @ingredients = split(',', $line);
                             
                         }
-                         # case ($keywords_line){
-                            # $keywords = "$line";
-                            # @keywords = split(',', $line);
-                         # }
-                         case ($ratings_line){
-                            # $avg_rating = $line;
-                         }
                         else{ # past all the food details
                             push @comments, "$line";
                             my @raw_comment = split('\s?\|\s?', "$line");
@@ -246,7 +233,6 @@ elsif($display_flag =~ m/^[\d]*/) {
                 
                 
             my $num_comments = @comments;
-            $avg_rating /= $num_comments;
             
             print $cgi->start_div({-id => 'basic_information'});
             print "<p class=\"food_name\"> $dishname </p>";
@@ -256,7 +242,16 @@ elsif($display_flag =~ m/^[\d]*/) {
             else{
                 print "No image provided. Upload a photo?";
             }
-            print "<p id=\"avg_rating\"> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
+            
+            
+            if ($num_comments > 0){
+                $avg_rating /= $num_comments;
+                print "<p id=\"avg_rating\"> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
+            }
+            else{
+                print "<p id=\"avg_rating\"> User rating: No ratings available! Be the first to leave your review below</p>";
+
+            }
             print "<p> Dish type: $temp_type </p>";
             print "<p> Location: $temp_canteen </p>";
             print "<p> Main ingredient: $temp_main_ingredient </p>";
@@ -348,10 +343,8 @@ elsif($display_flag =~ m/^[\d]*/) {
                     # re-create data file, with new comment and updated average rating
                     open(OUTFILE, '>', $file);
                         print OUTFILE "$dishname\n";
-                        print OUTFILE "$img_url\n";
                         print OUTFILE "$ingredients\n";
                         # print OUTFILE "$keywords\n";
-                        print OUTFILE "$avg_rating\n";
                         for (my $j = 0; $j < $num_comments; $j++){
                             print OUTFILE "$comments[$j]\n";
                             #print "$comments[$j]";
