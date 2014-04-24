@@ -201,8 +201,7 @@ elsif($display_flag =~ m/^[\d]*/) {
             my $temp_canteen = "";
             my $temp_main_ingredient = "";
             
-            open(READFILE, '<', $file);
-                
+            open(READFILE, '<', $file) || die;
                 while(my $line = <READFILE>){
                     $line_num++;
                     chomp $line;
@@ -244,7 +243,8 @@ elsif($display_flag =~ m/^[\d]*/) {
             
             if ($num_comments > 0){
                 $avg_rating /= $num_comments;
-                print "<p id=\"avg_rating\"> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
+                my $avg = sprintf("%.2f", $avg_rating);
+                print "<p id=\"avg_rating\"> User rating: $avg / 5  from  $num_comments reviews. </p>";
             }
             else{
                 print "<p id=\"avg_rating\"> User rating: No ratings available! Be the first to leave your review below</p>";
@@ -260,19 +260,14 @@ elsif($display_flag =~ m/^[\d]*/) {
                 print h4('Add a comment');
             
                 print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
-                    hidden(-name =>'_id', -value => $display_flag),
-                    hidden(-name =>'_file', -value => $file),
-                    hidden(-name =>'_dishname', -value => $dishname),
-                    hidden(-name =>'_results_url', -value => $this_page),
+                
+                    # the information to reload the detailed page
                     hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
                     hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
                     hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
                     hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
                     hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
                     
-                    p,
-                        "Your name: ", 
-                        $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
                     p,
                         "Please rate this dish: ",
                     p,
@@ -286,6 +281,9 @@ elsif($display_flag =~ m/^[\d]*/) {
                         "Comments: ",
                     p,
                         $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
+                    p,
+                        "Your name: ", 
+                        $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
                     p,
                         $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment');
                         
@@ -304,6 +302,7 @@ elsif($display_flag =~ m/^[\d]*/) {
             print $cgi->start_div({-id=>'comments'}),
                 h5('Comments and Reviews'),
                 "<ol id=\"comments_list\">";
+                
                 for (my $i = 0; $i < $num_comments; $i++){
                     #extract the data from the flat file
                     my @raw_comment = split('\s?\|\s?', $comments[$i]);
@@ -322,15 +321,16 @@ elsif($display_flag =~ m/^[\d]*/) {
                         );
                     }
                     else{
-                        print li({-class=>'review'}, 
+                        print li( {-class=>'review'}, 
                             p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
                             p({-class=>'comment'}, $comment),
                             p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
                             hr
                         );
                     }
-                }
+                } # end for loop for comments
             
+                # add new comment to file on submit
                 if ($cgi->param('_submit')){
                     
                     my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
@@ -343,16 +343,16 @@ elsif($display_flag =~ m/^[\d]*/) {
                     push @comments, $new_comment_line;
 
                     # re-create data file, with new comment and updated average rating
-                    open(OUTFILE, '>', $file);
-                        print OUTFILE "$dishname\n";
+                    open(OUTFILE, '>', $file) || die;
+                        print OUTFILE "$dishname | $temp_type | $temp_canteen | $temp_main_ingredient \n";
                         print OUTFILE "$ingredients\n";
-                        # print OUTFILE "$keywords\n";
-                        for (my $j = 0; $j < $num_comments; $j++){
+                        for (my $j = 0; $j < $num_comments + 1; $j++){
                             print OUTFILE "$comments[$j]\n";
-                            print "$comments[$j]";
+                            # print "$comments[$j]";
                         }
                     close(OUTFILE);
                     
+                    # print newest comment to display on browser
                      print li({-class=>'review'}, 
                             p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
                             p({-class=>'recommended'}, 'Bottom Line ', $recommended),
@@ -365,11 +365,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                 }
                 
                 print "</ol>";
-            $cgi->end_div(); #end comments and comment form div
-            
-            
-            
-            
+            $cgi->end_div(); #end "comments" div
             
         }
         else { # if error opening file

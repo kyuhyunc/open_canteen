@@ -85,23 +85,17 @@ function check_redirect(flag) {
 function add_comment(){
     
     var form = document.getElementById('add_comment_form');
+    
     var reviewer_name = document.getElementById('_reviewer_name').value;
     var comment = document.getElementById('_comment').value;
     var rating = document.getElementById('_rating').value;
     var recommend = document.getElementById('_recommend').value;
-    var dishname = document.getElementById('_dishname').value;
+    var dishname = document.getElementsByName('food_name')[0].value;
     
-    // check that something other than whitespace is entered for name and comment
-    if (!reviewer_name.match(/\S/)){ // if no name entered
+    if (!reviewer_name){
         reviewer_name = "Anonymous";
     }
-    if (!comment.match(/\S/)) // if no comment left
-        var leave_empty = confirm("Leave rating without a review?");
-        if (!leave_empty){
-            return;
-        }
-    }
-     
+    
     var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommend +"\nComments: " + comment + "\n\nAdd review?";
     var add_comment = confirm(confirmation_string);
     return add_comment;
