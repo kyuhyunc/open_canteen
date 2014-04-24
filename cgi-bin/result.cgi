@@ -367,7 +367,7 @@ elsif($display_flag =~ m/^[\d]*/) {
 
                         "Comments: ",
                     p,
-                        $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
+                        $cgi->textarea(-id => '_comment', -name => '_comment', -value => '', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
                     p,
                         "Your name: ", 
                         $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
