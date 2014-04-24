@@ -1,4 +1,4 @@
-fried noodle in soya sauce / fried_noodle / canteen2 / vegetable
+fried noodle in soya sauce | fried_noodle | canteen2 | vegetable
 onion,bean
 delicious | 4 | shin
 vomit | 0 | lee

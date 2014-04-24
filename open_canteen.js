@@ -13,7 +13,12 @@ $(document).ready( function() {
         $('#display').toggle('slow');
         return false;
     });
-    
+   
+//    $("table tr").click(function() {
+//    $("table tr").css("background", "#fff"); //reset to original color
+//    $(this).css("background", "#fo0"); //apply the new color
+//    });
+
 });
 
 // Check if inputs have been selected/entered properly
@@ -71,10 +76,11 @@ function do_alert(err_flag)
     }
 }
 
-function show_detail(id)
+function show_detail(id, index)
 {
     //alert(document.getElementById('detail_info').value + " / " +id);
     document.getElementById('detail_info').value = id;
+    document.getElementById('selected_row').value = index;
     document.forms["display"].submit();   
  
     return true;
@@ -134,6 +140,7 @@ function add_comment(){
     
     var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommendation +"\nComments: " + comment + "\n\nAdd review?";
     var add_comment = confirm(confirmation_string);
+    
     return add_comment;
 }
 
@@ -143,3 +150,25 @@ function do_print(msg)
     alert("print: " + msg);
 }
 
+function clearForm() 
+{
+    //document.getElementById("_comment").value = "";
+    //document.forms["add_comment_form"].reset();
+}
+
+function chg_row_color(index)
+{
+    // reset row color
+    var table = document.getElementById("metadata_table");    
+    var rows = table.getElementsByTagName("tr"); 
+    //if(index != null) { 
+        for(var i = 0; i < rows.length; i++) {
+            if(i==(index+1)) {
+                rows[i].className = "selected_row";
+            }
+            else {
+                rows[i].className = "plain_row";
+            }
+        }  
+    //}
+}

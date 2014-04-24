@@ -13,7 +13,7 @@ my $cgi = new CGI;
 my @food_type = param('food_type');
 my $ingredient = param('ingredient');
 my $canteen = param('canteen');
-my $food_name = lc(param('food_name'));
+my $food_name = param('food_name');
 
 my $metadata; # variable to save metadata.txt in db directory
 my @table; # table to store data from metadata
@@ -110,13 +110,13 @@ if ($pic_addr ne "") {
 }
 
 
-# append new comment to file on submit when comment exists
-if (($cgi->param('_submit') eq "Post Comment") && ($cgi->param('_comment') ne "")){
+# append new comment to file on submit
+if ($cgi->param('_submit_comment') && $cgi->param('file_name')){
     
     my $file = $cgi->param('file_name');
     my $comment = $cgi->param('_comment');
     my $rating = $cgi->param('_rating');
-    my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
+    my $reviewer = $cgi->param('_reviewer_name');
     my $recommended = $cgi->param('_recommend');
     
     # add newest comment to list
@@ -126,9 +126,10 @@ if (($cgi->param('_submit') eq "Post Comment") && ($cgi->param('_comment') ne ""
     open(APPENDFILE, '>>', $file) || die;
         print APPENDFILE "$new_comment_line\n";
     close(APPENDFILE);
+    
 }
 
-my $selected_row = param('selected_row');
+
 print header,
 #    qq(<script language="JavaScript" src="../open_canteen.js"></script>),
     start_html(
@@ -140,8 +141,7 @@ print header,
         #-onLoad=>"do_alert($err_flag); do_print($table_rows)"
         #-base=>'_parent',
         -target=>'_top',
-        -onLoad=>"do_alert($err_flag);clearForm();chg_row_color($selected_row)",
-        -onUnload=>"clearForm();" 
+        -onLoad=>"do_alert($err_flag);" 
     );
 
 print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
@@ -187,14 +187,14 @@ print $cgi->end_table(),
 # print out filtered metadata
 print h3('List of Foods Based on Search Keys'),
     #$cgi->start_table({-border=>'', -class=>'fixed'}),
-    $cgi->start_table({-id=>'metadata_table', -border=>'', width=>"100%"}),
+    $cgi->start_table({-border=>'', width=>"100%"}),
+    #caption({-align=>'LEFT'}, strong('List of Foods Based on Search Keys')),
     $cgi->start_Tr({-align=>'CENTER', -valign=>'TOP'}),
     th(['ID Number', 'Name', 'Type', 'Canteen Location', 'Main Ingredient']),
     $cgi->end_Tr();
 
 for(my $i=0; $i<$table_rows; $i++) {
-    #print $cgi->start_Tr({-onClick=>"show_detail($table[$i][0]);chg_row_color($clicked_row)"}),
-    print $cgi->start_Tr({-onClick=>"show_detail($table[$i][0], $i);"}),
+    print $cgi->start_Tr({-onClick=>"show_detail($table[$i][0])"}),
         td({-align=>'CENTER', -valign=>'TOP'}, [$table[$i][0], $table[$i][1], $table[$i][2], $table[$i][3], $table[$i][4]]),
         $cgi->end_Tr();
 }
@@ -210,7 +210,6 @@ my $display_flag = param('detail_info'); #flag variable for displaying detail in
 if($display_flag eq '') {
     print start_form({-id=>'display'}),
         hidden(-name=>'detail_info', -id=>'detail_info', -value=>undef),
-        hidden(-name=>'selected_row', -id=>'selected_row', -value=>undef),
         hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
         hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
         hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
@@ -221,7 +220,6 @@ elsif($display_flag =~ m/^[\d]*/) {
     print start_form({-id=>'display'}),
         
         hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
-        hidden(-name=>'selected_row', -id=>'selected_row', -value=>$selected_row),
         hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
         hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
         hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
@@ -229,8 +227,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         end_form;
 
     print $cgi->start_div({-id => 'detail', name => $display_flag});
-        #my $dishname = "$table[$display_flag][1]";
-        my $dishname;
+        my $dishname = "$table[$display_flag][1]";
         my $file = "../db/foods/$display_flag.txt";
         
         my @comments = ();
@@ -282,7 +279,6 @@ elsif($display_flag =~ m/^[\d]*/) {
                         switch($line_num){
                             case ($dishname_line){
                                 @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
-                                $dishname = $raw_main_info[0];
                                 $temp_type = $raw_main_info[1];
                                 $temp_canteen = $raw_main_info[2];
                                 $temp_main_ingredient = $raw_main_info[3];
@@ -303,7 +299,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                 }
             close(READFILE);
                 
-            my $num_comments = scalar @comments;
+            my $num_comments = @comments;
             
             print $cgi->start_div({-id => 'basic_information'});
             print "<p class=\"food_name\"> $dishname </p>";
@@ -333,7 +329,6 @@ elsif($display_flag =~ m/^[\d]*/) {
                 hidden(-name =>'_dishname', -value => $dishname),
                 hidden(-name =>'_results_url', -value => $this_page),
                 hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
-                hidden(-name=>'selected_row', -id=>'selected_row', -value=>$selected_row),
                 hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
                 hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
                 hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
@@ -347,7 +342,6 @@ elsif($display_flag =~ m/^[\d]*/) {
             print $cgi->end_div(), hr;
                 
             print $cgi->start_div({-id=>'comment_area'}); 
-            
             # display all the comments to the screen
             print $cgi->start_div({-id=>'comments'}),
                 h4({-id=>'comment_title'}, 'Comments and Reviews'),
@@ -383,6 +377,37 @@ elsif($display_flag =~ m/^[\d]*/) {
                     }
                 } # end for loop for comments
             
+                # add new comment to file on submit
+                if ($cgi->param('_submit')){
+                    
+                    my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
+                    my $recommended = $cgi->param('_recommend');
+                    my $rating = $cgi->param('_rating');
+                    my $comment = $cgi->param('_comment');
+
+                    # add newest comment to list
+                    my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
+                    push @comments, $new_comment_line;
+
+                    # re-create data file, with new comment and updated average rating
+                    open(OUTFILE, '>', $file) or die $!;
+                        print OUTFILE "$dishname | $temp_type | $temp_canteen | $temp_main_ingredient \n";
+                        print OUTFILE "$ingredients\n";
+                        for (my $j = 0; $j < $num_comments + 1; $j++){
+                            print OUTFILE "$comments[$j]\n";
+                            # print "$comments[$j]";
+                        }
+                    close(OUTFILE);
+                    
+                    # print newest comment to display on browser
+                     print li({-class=>'review'}, 
+                            p({-class=>'rating'}, 'Rating: ', $rating, ' / 5 <span class="bottom_line_span">', 'Bottom Line: ', $recommended, '</span>'),
+                            p({-class=>'comment'}, $comment),
+                            p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
+                            hr
+                        );
+                }
+                
                 print "</ol>";
             print $cgi->end_div(); #end "comments" div
 
@@ -390,11 +415,10 @@ elsif($display_flag =~ m/^[\d]*/) {
             print $cgi->start_div({-id=>'add_comment'});
                 print h4({-id=>'comment_title'}, 'Add a Comment');
             
-                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -autocomplete=>'off', -onSubmit => "return add_comment()"),
+                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
                 
                     # the information to reload the detailed page
                     hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
-                    hidden(-name=>'selected_row', -id=>'selected_row', -value=>$selected_row),
                     hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
                     hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
                     hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
@@ -408,7 +432,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                     p({-class=>'add_comment_label'}, "Would you recommend? "),
                     p({-class=>'add_comment_box'}, $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok')),
                     p({-class=>'add_comment_label'}, "Comments: "),
-                    p({-class=>'add_comment_box'}, $cgi->textarea(-id => '_comment', -name => '_comment', -cols => 40, -autocomplete=>'off', -rows => 4, -onClick => "this.value=\"\"")),
+                    p({-class=>'add_comment_box'}, $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\"")),
                     p({-class=>'add_comment_label'}, "Your name: "),
                     p({-class=>'add_comment_box'}, $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\"")),
                     p({-class=>'add_comment_box'}, $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'));

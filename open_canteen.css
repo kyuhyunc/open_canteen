@@ -113,8 +113,19 @@ div.button {
 }
 
 div#basic_information {
-    height: 250px;
+    margin-bottom: 20px;
 }
+
+#img_container {
+    display:inline-block;
+    margin-left: 2%;
+}
+
+#basic_info_container {
+    display:inline-block;
+    vertical-align: top;
+}
+
 p.food_name {
     text-align: center;
     text-transform: capitalize;
@@ -134,12 +145,31 @@ img.dish_img{
     content: "";
 }
 
+#comment_title {
+    margin-top: 10px;
+}
+
+.bottom_line_span {
+    float: right;
+    margin-right: 20%;
+}
+
 #comments {
     min-width: 200px;
     width: 50%;
     display:inline-block;
     margin-right: 5%;
     vertical-align: top;
+    word-wrap: break-word;
+}
+
+textarea {
+    resize:none;
+    width: 90%;
+}
+
+#_reviewer_name {
+    width: 50%;
 }
 
 div#add_comment {
@@ -147,6 +177,15 @@ div#add_comment {
     width: 40%;
     display:inline-block;
     vertical-align: top;
+}
+
+.add_comment_label {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.add_comment_box {
+    margin-top: 0;
 }
 
 .rating {
@@ -161,6 +200,10 @@ div#add_comment {
     margin: 3px 0 0 0;
 }
 
+.selected_row {
+    background-color: tan;
+}
 
-
-
+.plain_row {
+    background-color: transparent;
+}
