@@ -126,6 +126,7 @@ if ($cgi->param('_submit_comment') && $cgi->param('file_name')){
     open(APPENDFILE, '>>', $file) || die;
         print APPENDFILE "$new_comment_line\n";
     close(APPENDFILE);
+    
 }
 
 
@@ -276,23 +277,25 @@ elsif($display_flag =~ m/^[\d]*/) {
                 while(my $line = <READFILE>){
                     $line_num++;
                     chomp $line;
-                    switch($line_num){
-                        case ($dishname_line){
-                            @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
-                            $temp_type = $raw_main_info[1];
-                            $temp_canteen = $raw_main_info[2];
-                            $temp_main_ingredient = $raw_main_info[3];
-                        }
-                        case ($ingredients_line){
-                            $ingredients = "$line";
-                            @ingredients = split(',', $line);
-                            
-                        }
-                        else{ # past all the food details
-                            push @comments, "$line";
-                            my @raw_comment = split('\s?\|\s?', "$line");
-                            my $rating = $raw_comment[1];
-                            $avg_rating += $rating;
+                    if  ($line =~ /\S/){
+                        switch($line_num){
+                            case ($dishname_line){
+                                @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
+                                $temp_type = $raw_main_info[1];
+                                $temp_canteen = $raw_main_info[2];
+                                $temp_main_ingredient = $raw_main_info[3];
+                            }
+                            case ($ingredients_line){
+                                $ingredients = "$line";
+                                @ingredients = split(',', $line);
+                                
+                            }
+                            else{ # past all the food details
+                                    push @comments, "$line";
+                                    my @raw_comment = split('\s?\|\s?', "$line");
+                                    my $rating = $raw_comment[1];
+                                    $avg_rating += $rating;
+                            }
                         }
                     }
                 }
