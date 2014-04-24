@@ -1,0 +1,4 @@
+pan-fried fish fillet | dish | canteen1 | fish
+pan-fried,fillet
+potato,crispy,fish
+
