@@ -13,6 +13,7 @@ $(document).ready( function() {
         $('#display').toggle('slow');
         return false;
     });
+    
 });
 
 // Check if inputs have been selected/entered properly
@@ -84,10 +85,12 @@ function check_redirect(flag) {
 function add_comment(){
     alert("hi");
     // validate form first
-    var reviewer_name = document.getElementsByName("_name")[0].value;
-    var recommendation = document.getElementsByName("_recommend")[0].value;
-    var rating = document.getElementsByName("_rating")[0].value;
+    var form = document.getElementById('add_comment_form');
+    var reviewer_name = document.getElementsByName("_reviewer_name")[0].value;
     var comment = document.getElementsByName("_comment")[0].value;
+    var rating = document.getElementsByName("_rating")[0].value;
+    var recommend = document.getElementsByName("_recommend")[0].value;
+    var dishname = document.getElementsByName("_dishname")[0].value;
     
     alert(comment);
     // check that something other than whitespace is entered for name and comment
@@ -95,10 +98,7 @@ function add_comment(){
     var comment_entered = comment.match(/\S/);
     
     if (!name_entered){
-        var leave_empty = confirm("No name entered. Leave review anonymously?");
-        if (!leave_empty){
-            return;
-        }
+        reviewer_name = "Anonymous";
     }
     if (!comment_entered){
         var leave_empty = confirm("Leave rating without a review?");
@@ -107,11 +107,29 @@ function add_comment(){
         }
     }
      
-    // add new comment
-    var add_comment = confirm("Add rating?");
-    if (add_comment){
-        alert("Added!");
-    }
+    var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommend +"\nComments: " + comment + "\n\nAdd review?";
+    var add_comment = confirm(confirmation_string);
+    //if (add_comment){
+        // var id = document.getElementsByName("_id")[0].value;
+        // var url = document.getElementsByName("_results_url")[0].value;
+        //show_detail(id);
+        //window.location.replace(url);
+        
+        // var comments_list = document.getElementById('comments_list');
+        // var new_comment_node = document.createElement('li');
+        // new_comment_node.setAttribute("class", "review");
+        
+        // var content = "<p class=\"rating\"> Rating: " + rating  + "/ 5 </p>";
+        // content = content.concat("<p class=\"recommended\"> Bottom line: " + recommend + "</p>");
+        // content = content.concat("<p class=\"comment\"> " + comment + " </p>");
+        // content = content.concat("<p class=\"reviewer_name\"> - Review by " + reviewer_name + " </p>");
+        // content = content.concat("<hr/>");
+        // content = content.concat("</li>");
+        
+        // new_comment_node.innerHTML = content;
+        // comments_list.appendChild(new_comment_node);
+    //}
+
     return add_comment;
 }
 
