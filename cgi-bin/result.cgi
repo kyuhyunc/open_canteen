@@ -98,8 +98,10 @@ print $cgi->Link({-rel=>'stylesheet', -type=>'text/css', -href=>'../open_canteen
     
     $cgi->start_div({-id=>'container'}),
     $cgi->start_div({-id=>'content'}),
-    $cgi->div({-id=>'header'}, h1('Open Canteen!'));
-        
+    $cgi->start_div({-id=>'header'}),
+    a({-href=>'../'}, "<h1>Open Canteen!</h1>"),
+    $cgi->end_div();
+ 
 print $cgi->start_fieldset(),
     $cgi->start_legend(),
     $cgi->start_strong(),
