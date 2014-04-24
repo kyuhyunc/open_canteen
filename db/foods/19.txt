@@ -1,4 +1,3 @@
-fried rice "thai style" | fried_rice | canteen2 | else
-thai,fried
+fried rice thai style | fried_rice | canteen2 | else
 vegetable
 

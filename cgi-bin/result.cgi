@@ -288,15 +288,14 @@ elsif($display_flag =~ m/^[\d]*/) {
                 print "<img src=\"$img_url\" class=\"dish_img\"/>";
             }
 
-            print $cgi->start_fieldset({-class=>'input_fieldset'}); 
+            print $cgi->start_fieldset({-class=>'input_fieldset2'}); 
             if ($num_comments > 0){
                 $avg_rating /= $num_comments;
                 my $avg = sprintf("%.2f", $avg_rating);
-                print p({-class=>'basic_info_element' -id=>'avg_rating'}, 'User rating: ', $avg, '/ 5  from  ', $num_comments,' reviews.');
+                print "<p class=\"basic_info_element\" id=\"avg_rating\"> User rating: $avg / 5  from  $num_comments reviews. </p>";
             }
             else{
-                print p({-class=>'basic_info_element' -id=>'avg_rating'}, 'User rating: No ratings available! Be the first to leave your review below');
-
+                print "<p class=\"basic_info_element\" id=\"avg_rating\"> User rating: No ratings available! Be the first to leave your review below</p>";
             }
             print "<p class=\"basic_info_element\"> Dish type: $temp_type </p>";
             print "<p class=\"basic_info_element\"> Location: $temp_canteen </p>";
@@ -312,59 +311,17 @@ elsif($display_flag =~ m/^[\d]*/) {
                 hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
                 hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
                 hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name);
-            print "<fieldset class=\"input_fieldset\"><legend style=\"font-size:15px\">Upload/Update Picture</legend>";
+            print "<fieldset class=\"input_fieldset\"><legend style=\"font-size:16px\">Upload/Update Picture</legend>";
             print "<input id=\"pic_upload\" type=\"file\" name=\"pic_upload\"/>";
             print "<input id=\"pic_submit\" type=\"submit\" value=\"submit\"/>";
             print "</fieldset>";
             print "</form>";
             print $cgi->end_div(), hr;
                 
-       
-            print $cgi->start_div({-id=>'add_comment'});
-                print h4('Add a comment');
-            
-                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
-                
-                    # the information to reload the detailed page
-                    hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
-                    hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
-                    hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
-                    hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
-                    hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
-                    
-                    p,
-                        "Please rate this dish: ",
-                    p,
-                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5']),
-                    p,
-                        "Would you recommend? ",
-                    p,
-                        $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
-                    p,
-
-                        "Comments: ",
-                    p,
-                        $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
-                    p,
-                        "Your name: ", 
-                        $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
-                    p,
-                        $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment');
-                        
-                        
-                    # recalculate average rating if the user submits a new review
-                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);
-                    
-                    print $cgi->hidden(-name=>'_avg_rating', -id=>'_avg_rating', -value=>$avg_rating);
-                
-                    print $cgi->end_form,
-                hr;
-            print $cgi->end_div();
-            
+            print $cgi->start_div({-id=>'comment_area'}); 
             # now display all the comments to the screen
-            
             print $cgi->start_div({-id=>'comments'}),
-                h5('Comments and Reviews'),
+                h4('Comments and Reviews'),
                 "<ol id=\"comments_list\">";
                 
                 for (my $i = 0; $i < $num_comments; $i++){
@@ -374,11 +331,14 @@ elsif($display_flag =~ m/^[\d]*/) {
                     my $rating = $raw_comment[1];
                     my $reviewer = $raw_comment[2];
                     my $recommend = $raw_comment[3] || 0; # our data files don't all have this field due to format change
-                    
+
+                    if($rating eq "") { 
+                        $rating = 0;
+                    }                    
+
                     if ($recommend){
                         print li( {-class=>'review'}, 
-                            p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
-                            p({-class=>'recommended'}, 'Bottom Line ', $recommend),
+                            p({-class=>'rating'}, 'Rating: ', $rating, ' / 5    ', 'Bottom Line: ', $recommend),
                             p({-class=>'comment'}, $comment),
                             p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
                             hr
@@ -386,7 +346,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                     }
                     else{
                         print li( {-class=>'review'}, 
-                            p({-class=>'rating'}, 'Rating: ', $rating, '/5'),
+                            p({-class=>'rating'}, 'Rating: ', $rating, ' / 5'),
                             p({-class=>'comment'}, $comment),
                             p({-class=>'reviewer_name'}, '- Review by ', $reviewer),
                             hr
@@ -429,8 +389,50 @@ elsif($display_flag =~ m/^[\d]*/) {
                 }
                 
                 print "</ol>";
-            $cgi->end_div(); #end "comments" div
+            print $cgi->end_div(); #end "comments" div
+
+            # Add comment area
+            print $cgi->start_div({-id=>'add_comment'});
+                print h4('Add a Comment');
             
+                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
+                
+                    # the information to reload the detailed page
+                    hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
+                    hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
+                    hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
+                    hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
+                    hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
+                    
+                    p,
+                        "Please rate this dish: ",
+                    p,
+                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5']),
+                    p,
+                        "Would you recommend? ",
+                    p,
+                        $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
+                    p,
+
+                        "Comments: ",
+                    p,
+                        $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
+                    p,
+                        "Your name: ", 
+                        $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
+                    p,
+                        $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment');
+                        
+                        
+                    # recalculate average rating if the user submits a new review
+                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);
+                    
+                    print $cgi->hidden(-name=>'_avg_rating', -id=>'_avg_rating', -value=>$avg_rating);
+                
+                    print $cgi->end_form,
+                hr;
+            print $cgi->end_div(); # end of "add_comment" div
+            print $cgi->end_div(); # end "comment_area" div
         }
         else { # if error opening file
             print "<p> Could not open $file </p>";

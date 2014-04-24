@@ -1,4 +1,3 @@
 cheese chicken burger | dish | canteen1 | beef
-cheese,burger
 vegetable,tomato,onion
 

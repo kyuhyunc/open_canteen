@@ -19,6 +19,12 @@ h4 {
     text-align:center;
 }
 
+h5 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
 legend {
     font-size: 18px;
 }
@@ -48,6 +54,11 @@ a {
 fieldset.input_fieldset {
     border:0;
     width: 220px;
+    display:inline;
+}
+
+fieldset.input_fieldset2 {
+    border:0;
     display:inline;
 }
 
@@ -119,9 +130,37 @@ img.dish_img{
     border-radius:20px;    
 }
 
+#comment_area {
+    content: "";
+}
+
+#comments {
+    min-width: 200px;
+    width: 50%;
+    display:inline-block;
+    margin-right: 5%;
+    vertical-align: top;
+}
+
 div#add_comment {
     min-width: 200px;
     width: 40%;
-    float: right;
-    text-align: center;
+    display:inline-block;
+    vertical-align: top;
 }
+
+.rating {
+    margin: 0 0 0 0;
+}
+
+.comment {
+    margin: 5px 0 0 0;
+}
+
+.reviewer_name {
+    margin: 3px 0 0 0;
+}
+
+
+
+
