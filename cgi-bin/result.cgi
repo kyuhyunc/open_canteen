@@ -244,10 +244,10 @@ elsif($display_flag =~ m/^[\d]*/) {
             if ($num_comments > 0){
                 $avg_rating /= $num_comments;
                 my $avg = sprintf("%.2f", $avg_rating);
-                print "<p id=\"avg_rating\"> User rating: $avg / 5  from  $num_comments reviews. </p>";
+                print p({-id=>'avg_rating'}, 'User rating: ', $avg, '/ 5  from  ', $num_comments,' reviews.');
             }
             else{
-                print "<p id=\"avg_rating\"> User rating: No ratings available! Be the first to leave your review below</p>";
+                print p({-id=>'avg_rating'}, 'User rating: No ratings available! Be the first to leave your review below');
 
             }
             print "<p> Dish type: $temp_type </p>";
@@ -271,7 +271,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                     p,
                         "Please rate this dish: ",
                     p,
-                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
+                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5']),
                     p,
                         "Would you recommend? ",
                     p,
@@ -289,9 +289,9 @@ elsif($display_flag =~ m/^[\d]*/) {
                         
                         
                     # recalculate average rating if the user submits a new review
-                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);                    
+                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);
                     
-                    print $cgi->hidden(-name=>'avg_rating', -id=>'avg_rating', -value=>$avg_rating);
+                    print $cgi->hidden(-name=>'_avg_rating', -id=>'_avg_rating', -value=>$avg_rating);
                 
                     print $cgi->end_form,
                 hr;

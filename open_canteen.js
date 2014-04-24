@@ -91,6 +91,7 @@ function add_comment(){
     var rating = document.getElementById('_rating').value;
     var recommend = document.getElementById('_recommend').value;
     var dishname = document.getElementsByName('food_name')[0].value;
+    // var avg = document.getElementById('_avg_rating').value;
     
     if (!reviewer_name){
         reviewer_name = "Anonymous";
@@ -98,6 +99,10 @@ function add_comment(){
     
     var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommend +"\nComments: " + comment + "\n\nAdd review?";
     var add_comment = confirm(confirmation_string);
+    // if (add_comment){
+        // alert(document.getElementById('avg_rating').innerHTML);
+        // document.getElementById('avg_rating').innerHTML = avg;
+    // }
     return add_comment;
 }
 
