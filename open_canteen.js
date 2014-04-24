@@ -91,6 +91,8 @@ function add_comment(){
     var rating = document.getElementsByName("_rating")[0].value;
     var recommend = document.getElementsByName("_recommend")[0].value;
     var dishname = document.getElementsByName("_dishname")[0].value;
+    var avg_rating = document.getElementsByName("_avg_rating")[0].value;
+    var num_comments = document.getElementsByName("_num_comments")[0].value;
     
     alert(comment);
     // check that something other than whitespace is entered for name and comment
@@ -109,7 +111,9 @@ function add_comment(){
      
     var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommend +"\nComments: " + comment + "\n\nAdd review?";
     var add_comment = confirm(confirmation_string);
-    //if (add_comment){
+    if (add_comment){
+        // avg_rating = ((avg_rating * num_comments) + rating)/ (num_comments+1);
+        // document.getElementById("avg_rating").innerHTML = "User rating: "+ avg_rating + "/ 5  from "+ num_comments + " reviews.";
         // var id = document.getElementsByName("_id")[0].value;
         // var url = document.getElementsByName("_results_url")[0].value;
         //show_detail(id);
@@ -128,7 +132,7 @@ function add_comment(){
         
         // new_comment_node.innerHTML = content;
         // comments_list.appendChild(new_comment_node);
-    //}
+    }
 
     return add_comment;
 }

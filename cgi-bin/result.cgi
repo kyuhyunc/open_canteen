@@ -254,7 +254,7 @@ elsif($display_flag =~ m/^[\d]*/) {
             else{
                 print "No image provided. Upload a photo?";
             }
-            print "<p> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
+            print "<p id=\"avg_rating\"> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
             print "<p> Dish type: $temp_type </p>";
             print "<p> Location: $temp_canteen </p>";
             print "<p> Main ingredient: $temp_main_ingredient </p>";
@@ -281,7 +281,13 @@ elsif($display_flag =~ m/^[\d]*/) {
                     p,
                         "Please rate this dish: ",
                     p,
-                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
+                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3');
+                        
+                    # recalculate average rating if the user submits a new review
+                    $avg_rating = (($avg_rating * $num_comments) + param('_rating'))/ ($num_comments+1);                    
+                    
+                print $cgi->hidden(-name=>'avg_rating', -id=>'avg_rating', -value=>$avg_rating),
+            
                     p,
                         "Would you recommend? ",
                     p,
@@ -293,7 +299,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                         $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
                     p,
                         $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'),
-                $cgi->end_form,
+                    $cgi->end_form,
                 hr;
             print $cgi->end_div();
             
@@ -333,8 +339,9 @@ elsif($display_flag =~ m/^[\d]*/) {
                     my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
                     push @comments, $new_comment_line;
 
-                    my $num_comments = @comments;
-                    $avg_rating = $avg_rating; # re-calculate average rating
+
+                    # recalculate avg rating
+                    $avg_rating = (($avg_rating * $num_comments) + $rating)/ ($num_comments+1);
 
                     # re-create data file, with new comment and updated average rating
                     open(OUTFILE, '>', $file);

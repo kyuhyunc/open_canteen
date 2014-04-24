@@ -63,7 +63,8 @@ div.button {
 }
 
 #container {
-    max-width: 80%;
+    width: 80%;
+    max-width: 1000px;
     min-width: 400px;
     background-color: white;
     background: rgba(255,255,255,0.8);
@@ -87,3 +88,26 @@ div.button {
     font-size: 28px;
 }
 
+div#basic_information {
+    height: 250px;
+}
+p.food_name {
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+img.dish_img{
+    width: 200px;
+    height: 200px;
+    float: left;
+    padding-right: 20px;
+}
+
+div#add_comment {
+    min-width: 200px;
+    width: 40%;
+    float: right;
+    text-align: center;
+}
