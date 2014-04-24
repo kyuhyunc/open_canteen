@@ -45,14 +45,9 @@ foreach my $line (<$metadata>) {
 }
 close $metadata;
 
-# save pic_addr based on id number of a food
-my $pic_name;
-$pic_name = $table_rows.$file_extension; 
-
 # Open metadata.txt to append the new row
 open ($metadata, ">>../db/metadata.txt");
 print $metadata "\n$table_rows | $name | $type | $canteen | $main_ingredient";
-
 close $metadata;
 
 # Create new txt file in foods folder
@@ -60,6 +55,10 @@ open ($new_food, ">../db/foods/$table_rows.txt");
 print $new_food "$name | $type | $canteen | $main_ingredient\n";
 print $new_food "$ingredients\n";           # ingredients
 close $new_food;
+
+# save pic_addr based on id number of a food
+my $pic_name;
+$pic_name = $table_rows.$file_extension; 
 
 # create the picture file into the target directory
 if ($pic_addr) { # execute this only file has loaded

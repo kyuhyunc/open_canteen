@@ -53,6 +53,15 @@ function validateUpload()
     }    
 }
 
+function validatePicUpload()
+{
+    var pic_addr = document.getElementById("pic_upload");
+    if (pic_addr.value == "") {
+        alert("No picture uploaded");
+        return false;
+    }
+}
+
 // check if metadata text file has been loaded succesfully
 function do_alert(err_flag)
 {
@@ -109,6 +118,6 @@ function add_comment(){
 // function to use for debugging
 function do_print(msg)
 {
-    alert(msg);
+    alert("print: " + msg);
 }
 
