@@ -1,6 +1,5 @@
 yunnan noodle | soup_noodle | canteen1 | beef
-vegetable,noodle,soup 
-
+vegetable,noodle,soup
 ../db/images/0.jpg
 3.5
 good | 5 | kyu

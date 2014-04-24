@@ -79,16 +79,14 @@ function add_comment(){
     var comment = document.getElementsByName("_comment")[0].value;
     var rating = document.getElementsByName("_rating")[0].value;
     var recommend = document.getElementsByName("_recommend")[0].value;
+    var dishname = document.getElementsByName("_dishname")[0].value;
     
     // check that something other than whitespace is entered for name and comment
     var name_entered = reviewer_name.match(/\S/);
     var comment_entered = comment.match(/\S/);
     
     if (!name_entered){
-        var leave_empty = confirm("No name entered. Leave review anonymously?");
-        if (!leave_empty){
-            return;
-        }
+        reviewer_name = "Anonymous";
     }
     if (!comment_entered){
         var leave_empty = confirm("Leave rating without a review?");
@@ -97,14 +95,13 @@ function add_comment(){
         }
     }
      
-    // add new comment
-    var add_comment = confirm("Add rating?");
-    if (add_comment){
+    var confirmation_string = "Thanks " + reviewer_name + "!\nYou are about to leave the following review for " + dishname + ":\n\nRating: " + rating + "/5 \nBottom Line: " + recommend +"\nComments: " + comment + "\n\nAdd review?";
+    var add_comment = confirm(confirmation_string);
+    //if (add_comment){
         // var id = document.getElementsByName("_id")[0].value;
         // var url = document.getElementsByName("_results_url")[0].value;
         //show_detail(id);
         //window.location.replace(url);
-    
         
         // var comments_list = document.getElementById('comments_list');
         // var new_comment_node = document.createElement('li');
@@ -119,9 +116,7 @@ function add_comment(){
         
         // new_comment_node.innerHTML = content;
         // comments_list.appendChild(new_comment_node);
-        
-        
-    }
+    //}
 
     return add_comment;
 }

@@ -178,11 +178,11 @@ elsif($display_flag =~ m/^[\d]*/) {
         my $file = "../db/foods/$display_flag.txt";
         
         my @comments = ();
-        my @keywords = ();
+        # my @keywords = ();
         my @ingredients = ();
         
-        my $img_url = "";
-        my $keywords ="";
+        my $img_url = "../db/images/$display_flag.jpg";
+        # my $keywords ="";
         my $ingredients = "";
         my $avg_rating = 0;
         
@@ -195,12 +195,16 @@ elsif($display_flag =~ m/^[\d]*/) {
             
             # info about the text file
             my $dishname_line = 1;
-            my $img_url_line = 4;
-            my $ingredients_line = 3;
-            my $keywords_line = 2;
-            my $ratings_line = 5;
+            my $img_url_line = 3;
+            my $ingredients_line = 2;
+            # my $keywords_line = 0;
+            my $ratings_line = 4;
 
 
+            my $temp_type = "";
+            my $temp_canteen = "";
+            my $temp_main_ingredient = "";
+            
             open(READFILE, '<', $file);
                 
                 while(my $line = <READFILE>){
@@ -209,24 +213,30 @@ elsif($display_flag =~ m/^[\d]*/) {
                     switch($line_num){
                         case ($dishname_line){
                             @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
+                            $temp_type = $raw_main_info[1];
+                            $temp_canteen = $raw_main_info[2];
+                            $temp_main_ingredient = $raw_main_info[3];
                         }
-                        case ($img_url_line){
-                            $img_url = "$line";
-                        }
+                         case ($img_url_line){
+                            # $img_url = "$line";
+                         }
                         case ($ingredients_line){
                             $ingredients = "$line";
                             @ingredients = split(',', $line);
                             
                         }
-                        case ($keywords_line){
-                            $keywords = "$line";
-                            @keywords = split(',', $line);
-                        }
-                        case ($ratings_line){
-                            $avg_rating = $line;
-                        }
+                         # case ($keywords_line){
+                            # $keywords = "$line";
+                            # @keywords = split(',', $line);
+                         # }
+                         case ($ratings_line){
+                            # $avg_rating = $line;
+                         }
                         else{ # past all the food details
                             push @comments, "$line";
+                            my @raw_comment = split('\s?\|\s?', "$line");
+                            my $rating = $raw_comment[1];
+                            $avg_rating += $rating;
                         }
                     }
                 }
@@ -235,19 +245,23 @@ elsif($display_flag =~ m/^[\d]*/) {
                 
                 
             my $num_comments = @comments;
+            $avg_rating /= $num_comments;
             
-            print "<p> $dishname </p>";
-            print "<img src=\"$img_url\" width=\"200\" height=\"200\" class=\"food_img\"/>";
+            $cgi->start_div(-id => 'food_detail');
+            print "<p class=\"food_name\"> $dishname </p>";
+            print "<img src=\"$img_url\" class=\"dish_img\"/>";
             print "<p> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
-            #print "<p> Dish type: $food_type </p>";
-            print "<p> Location: $canteen </p>";
-            print "<p> Main ingredient: $ingredient </p>";
-            
+            print "<p> Dish type: $temp_type </p>";
+            print "<p> Location: $temp_canteen </p>";
+            print "<p> Main ingredient: $temp_main_ingredient </p>";
+            $cgi->end_div(), hr;
+                
        
             print h4('Add a comment'),
             $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
                 hidden(-name =>'_id', -value => $display_flag),
                 hidden(-name =>'_file', -value => $file),
+                hidden(-name =>'_dishname', -value => $dishname),
                 hidden(-name =>'_results_url', -value => $this_page),
                 hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
                 hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
@@ -285,12 +299,14 @@ elsif($display_flag =~ m/^[\d]*/) {
                 my @raw_comment = split('\s?\|\s?', $comments[$i]);
                 my $comment = $raw_comment[0];
                 my $rating = $raw_comment[1];
-                my $recommend = $raw_comment[2];
                 my $reviewer = $raw_comment[2];
+                my $recommend = $raw_comment[3] || 0; # our data files don't all have this field due to format change
                 
                 print "<li class=\"review\">";
                     print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                    #print "<p class=\"recommended\"> Bottom line: $recommend </p>";
+                    if ($recommend){
+                        print "<p class=\"recommended\"> Bottom line: $recommend </p>";
+                    }
                     print "<p class=\"comment\"> $comment </p>";
                     print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
                     print "<hr/>";
@@ -299,14 +315,14 @@ elsif($display_flag =~ m/^[\d]*/) {
             
                 if ($cgi->param('_submit')){
                     
-                    my $reviewer = $cgi->param('_reviewer_name');
+                    my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
                     my $recommended = $cgi->param('_recommend');
                     my $rating = $cgi->param('_rating');
                     my $comment = $cgi->param('_comment');
 
                     # add newest comment to list
                     #my $new_comment_line = "$comment | $rating | $recommended | $reviewer";
-                    my $new_comment_line = "$comment | $rating | $reviewer";
+                    my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
                     push @comments, $new_comment_line;
 
                     my $num_comments = @comments;
@@ -317,7 +333,7 @@ elsif($display_flag =~ m/^[\d]*/) {
                         print OUTFILE "$dishname\n";
                         print OUTFILE "$img_url\n";
                         print OUTFILE "$ingredients\n";
-                        print OUTFILE "$keywords\n";
+                        # print OUTFILE "$keywords\n";
                         print OUTFILE "$avg_rating\n";
                         for (my $j = 0; $j < $num_comments; $j++){
                             print OUTFILE "$comments[$j]\n";
@@ -326,12 +342,12 @@ elsif($display_flag =~ m/^[\d]*/) {
                     close(OUTFILE);
                     
                      print "<li class=\"review\">";
-                    print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                    #print "<p class=\"recommended\"> Bottom line: $recommend </p>";
-                    print "<p class=\"comment\"> $comment </p>";
-                    print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
-                    print "<hr/>";
-                print "</li>";
+                        print "<p class=\"rating\"> Rating: $rating / 5 </p>";
+                        print "<p class=\"recommended\"> Bottom line: $recommended </p>";
+                        print "<p class=\"comment\"> $comment </p>";
+                        print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
+                        print "<hr/>";
+                    print "</li>";
                     
                 
                 }
