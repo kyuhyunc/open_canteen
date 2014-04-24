@@ -1,5 +1,4 @@
 new zealand steak | steak | canteen1 | beef
-new zealand
 vegetable,potato
 
 5

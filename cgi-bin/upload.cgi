@@ -19,7 +19,7 @@ my $ingredients = param('ingredients_');
 my $pic_addr = param('photo');
 
 # picture related..
-my ($file_name, $file_path, $file_extension) = fileparse ($pic_addr, '..*');
+my ($file_name, $file_path, $file_extension) = fileparse ($pic_addr, '\..*');
 my $upload_dir = "../db/images";
 my $upload_filehandle = $cgi->upload("photo"); # actually holding the picture
 #my $safe_filename_characters = "a-zA-Z0-9_.-"; # to restrict name of a picture
@@ -45,36 +45,38 @@ foreach my $line (<$metadata>) {
 }
 close $metadata;
 
-#$pic_addr = "$table_rows.$file_extension"; # save pic_addr based on id number of a food
-$pic_addr = $file_name.$file_extension; # save pic_addr based on id number of a food
+my $pic_name;
+$pic_name = $table_rows.$file_extension; # save pic_addr based on id number of a food
 
 # Open metadata.txt to append the new row
 open ($metadata, ">>../db/metadata.txt");
-print $metadata "\n$table_rows | $name | $type | $canteen | $ingredients";
+print $metadata "\n$table_rows | $name | $type | $canteen | $main_ingredient";
 
 close $metadata;
 
 # Create new txt file in foods folder
 open ($new_food, ">../db/foods/$table_rows.txt");
 print $new_food "$name | $type | $canteen | $main_ingredient\n";
-print $new_food "$ingredients\n";
-print $new_food "$upload_dir/$pic_addr\n";
-print $new_food "0\n";
+print $new_food "$ingredients\n";           # ingredients
+print $new_food "$upload_dir/$pic_name\n";  # picture address
+print $new_food "0\n";                      # overall rating
 close $new_food;
 
 # create the picture file into the target directory
-open ($UPLOADFILE, ">$upload_dir/$pic_addr") or ($err_flag = true);
-binmode $UPLOADFILE;
+if ($pic_addr) { # execute this only file has loaded
+    open ($UPLOADFILE, ">$upload_dir/$pic_name") or ($err_flag = true);
+    binmode $UPLOADFILE;
 
-while (<$upload_filehandle>) {
-  print $UPLOADFILE;
+    while (<$upload_filehandle>) {
+      print $UPLOADFILE $_;
+    }
+    close $UPLOADFILE;
 }
-close $UPLOADFILE;
 
 print header,
     start_html(
       -script=>{-src=>'../open_canteen.js'},
-      #-onLoad=>"do_alert($err_flag)"
+      -onLoad=>"do_alert($err_flag)"
     );
 #print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
 print "<META http-equiv=\"refresh\" content=\"0;URL=../\">";

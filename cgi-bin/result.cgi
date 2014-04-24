@@ -146,8 +146,7 @@ for(my $i=0; $i<$table_rows; $i++) {
 }
 
 print $cgi->end_table(),
-    br,
-    "Click a row to see the detail information",
+    h4('Click a row to see the detail information'),
     p(), hr; 
 
 my $this_page = self_url;

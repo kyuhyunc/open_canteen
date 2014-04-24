@@ -1,5 +1,4 @@
 baked spaghetti with bolognaise and mushroom | dish | canteen2 | else
-sphagetti,bolognaise,baked
 mushroom,tomato
 
 4

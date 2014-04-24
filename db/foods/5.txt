@@ -1,5 +1,4 @@
 fried noodle in soya sauce / fried_noodle / canteen2 / vegetable
-fried,noodle,soya
 onion,bean
 
 2
