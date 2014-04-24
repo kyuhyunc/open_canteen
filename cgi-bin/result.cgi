@@ -109,6 +109,27 @@ if ($pic_addr ne "") {
     close $UPLOADFILE;
 }
 
+
+# append new comment to file on submit
+if ($cgi->param('_submit_comment') && $cgi->param('file_name')){
+    
+    my $file = $cgi->param('file_name');
+    my $comment = $cgi->param('_comment');
+    my $rating = $cgi->param('_rating');
+    my $reviewer = $cgi->param('_reviewer_name');
+    my $recommended = $cgi->param('_recommend');
+    
+    # add newest comment to list
+    my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
+    
+    # APPEND new comment to data
+    open(APPENDFILE, '>>', $file) || die;
+        print APPENDFILE "$new_comment_line\n";
+    close(APPENDFILE);
+    
+}
+
+
 print header,
 #    qq(<script language="JavaScript" src="../open_canteen.js"></script>),
     start_html(
@@ -256,23 +277,25 @@ elsif($display_flag =~ m/^[\d]*/) {
                 while(my $line = <READFILE>){
                     $line_num++;
                     chomp $line;
-                    switch($line_num){
-                        case ($dishname_line){
-                            @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
-                            $temp_type = $raw_main_info[1];
-                            $temp_canteen = $raw_main_info[2];
-                            $temp_main_ingredient = $raw_main_info[3];
-                        }
-                        case ($ingredients_line){
-                            $ingredients = "$line";
-                            @ingredients = split(',', $line);
-                            
-                        }
-                        else{ # past all the food details
-                            push @comments, "$line";
-                            my @raw_comment = split('\s?\|\s?', "$line");
-                            my $rating = $raw_comment[1];
-                            $avg_rating += $rating;
+                    if  ($line =~ /\S/){
+                        switch($line_num){
+                            case ($dishname_line){
+                                @raw_main_info = split('\s?\|\s?', "$line"); # deal with this stuff later
+                                $temp_type = $raw_main_info[1];
+                                $temp_canteen = $raw_main_info[2];
+                                $temp_main_ingredient = $raw_main_info[3];
+                            }
+                            case ($ingredients_line){
+                                $ingredients = "$line";
+                                @ingredients = split(',', $line);
+                                
+                            }
+                            else{ # past all the food details
+                                    push @comments, "$line";
+                                    my @raw_comment = split('\s?\|\s?', "$line");
+                                    my $rating = $raw_comment[1];
+                                    $avg_rating += $rating;
+                            }
                         }
                     }
                 }
@@ -319,7 +342,7 @@ elsif($display_flag =~ m/^[\d]*/) {
             print $cgi->end_div(), hr;
                 
             print $cgi->start_div({-id=>'comment_area'}); 
-            # now display all the comments to the screen
+            # display all the comments to the screen
             print $cgi->start_div({-id=>'comments'}),
                 h4('Comments and Reviews'),
                 "<ol id=\"comments_list\">";
@@ -403,7 +426,10 @@ elsif($display_flag =~ m/^[\d]*/) {
                     hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
                     hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
                     hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
-                    
+
+                    # the information to write data to the file on reload
+                    hidden(-name=>'file_name', -id=>'file_name', -value=>$file),
+
                     p,
                         "Please rate this dish: ",
                     p,
