@@ -4,8 +4,9 @@ use strict;
 use warnings;
 use constant { true => 1, false => 0 };
 use CGI qw(:all);
-use CGI::Carp qw(fatalsToBrowser); #redirect error messages to browser
+use CGI::Carp qw(warningsToBrowser fatalsToBrowser); #redirect error messages to browser
 use Switch;
+use File::Basename;
 
 my $cgi = new CGI;
 
@@ -78,6 +79,36 @@ if($ingredient ne "any") {
     }        
 }
 
+# UPLOAD / UPDATE PICTURE
+my $pic_addr = param('pic_upload');
+
+# picture related..
+if ($pic_addr ne "") {
+    my ($file_name, $file_path, $file_extension) = fileparse ($pic_addr, '\..*');
+    my $upload_dir = "../db/images";
+    my $upload_filehandle = $cgi->upload('pic_upload'); # actually holding the picture
+
+    my $UPLOADFILE; # variable to create an actual picture file
+
+    # save pic_addr based on id number of a food
+    my $pic_name;
+    my $pic_num = param('detail_info');
+    $pic_name = $pic_num.$file_extension;
+
+    # create the picture file into the target directory
+    chmod 0777, $upload_dir or ($err_flag = true); # change permission of image folder to upload the file
+
+    `rm ../db/images/$pic_num.*`; # delete existing file
+
+    open ($UPLOADFILE, ">$upload_dir/$pic_name") or ($err_flag = true);
+    binmode $UPLOADFILE;
+
+    while (<$upload_filehandle>) {
+      print $UPLOADFILE $_;
+    }
+    close $UPLOADFILE;
+}
+
 print header,
 #    qq(<script language="JavaScript" src="../open_canteen.js"></script>),
     start_html(
@@ -89,7 +120,7 @@ print header,
         #-onLoad=>"do_alert($err_flag); do_print($table_rows)"
         #-base=>'_parent',
         -target=>'_top',
-        -onLoad=>"do_alert($err_flag)"
+        -onLoad=>"do_alert($err_flag);" 
     );
 
 print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
@@ -182,7 +213,25 @@ elsif($display_flag =~ m/^[\d]*/) {
         # my @keywords = ();
         my @ingredients = ();
         
-        my $img_url = "../db/images/$display_flag.jpg";
+        my $img_url = "../db/images/no_pic.jpg"; # default
+        # get picture from image folder: any typle of picture
+        my $dir = '../db/images';
+        opendir(DIR, $dir) or die $!;
+        while (my $file = readdir(DIR)) {
+            # We only want files
+            next unless (-f "$dir/$file");
+            
+            # We only want files
+            # Use a regular expression to find files ending in any suffix 
+            next unless ($file =~ m/^$display_flag\./);
+            
+            # We only want files
+            $img_url = $file;
+            $img_url = $dir . "/" . $img_url;
+            last; 
+        }
+        closedir DIR;
+        
         # my $keywords ="";
         my $ingredients = "";
         my $avg_rating = 0;
@@ -239,22 +288,35 @@ elsif($display_flag =~ m/^[\d]*/) {
             if (-e $img_url){
                 print "<img src=\"$img_url\" class=\"dish_img\"/>";
             }
-            else{
-                print "No image provided. Upload a photo?";
-            }
-            
-            
+
+            print $cgi->start_fieldset({-class=>'input_fieldset'}); 
             if ($num_comments > 0){
                 $avg_rating /= $num_comments;
-                print "<p id=\"avg_rating\"> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
+                print "<p class=\"basic_info_element\" id=\"avg_rating\"> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
             }
             else{
-                print "<p id=\"avg_rating\"> User rating: No ratings available! Be the first to leave your review below</p>";
+                print "<p class=\"basic_info_element\" id=\"avg_rating\"> User rating: No ratings available! Be the first to leave your review below</p>";
 
             }
-            print "<p> Dish type: $temp_type </p>";
-            print "<p> Location: $temp_canteen </p>";
-            print "<p> Main ingredient: $temp_main_ingredient </p>";
+            print "<p class=\"basic_info_element\"> Dish type: $temp_type </p>";
+            print "<p class=\"basic_info_element\"> Location: $temp_canteen </p>";
+            print "<p class=\"basic_info_element\"> Main ingredient: $temp_main_ingredient </p>";
+            print $cgi->end_fieldset();
+            print "<form id=\"upload\" method=\"POST\" onsubmit=\"return validatePicUpload()\" enctype=\"multipart/form-data\">";
+            print hidden(-name =>'_id', -value => $display_flag),
+                hidden(-name =>'_file', -value => $file),
+                hidden(-name =>'_dishname', -value => $dishname),
+                hidden(-name =>'_results_url', -value => $this_page),
+                hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
+                hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
+                hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
+                hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
+                hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name);
+            print "<fieldset class=\"input_fieldset\"><legend style=\"font-size:15px\">Upload/Update Picture</legend>";
+            print "<input id=\"pic_upload\" type=\"file\" name=\"pic_upload\"/>";
+            print "<input id=\"pic_submit\" type=\"submit\" value=\"submit\"/>";
+            print "</fieldset>";
+            print "</form>";
             print $cgi->end_div(), hr;
                 
        

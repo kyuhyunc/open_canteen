@@ -41,6 +41,10 @@ a {
     border:0;
 }
 
+.basic_info_element {
+    margin: 0 0 10px 0;
+}
+
 fieldset.input_fieldset {
     border:0;
     width: 220px;
@@ -93,6 +97,10 @@ div.button {
     font-size: 28px;
 }
 
+#pic_submit, $pic_upload {
+    display:inline; 
+}
+
 div#basic_information {
     height: 250px;
 }
@@ -107,7 +115,8 @@ img.dish_img{
     width: 200px;
     height: 200px;
     float: left;
-    padding-right: 20px;
+    margin-right: 20px;
+    border-radius:20px;    
 }
 
 div#add_comment {

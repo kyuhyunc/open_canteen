@@ -22,6 +22,6 @@
 7 | pan-fried turnip cake | else | canteen2 | else
 8 | seasonal vegetable | else | canteen2 | vegetable
 9 | new zealand steak | steak | canteen1 | beef
-10 | congee.Bbq pork bun | congee | canteen2 | pork
+10 | congee bbq pork bun | congee | canteen2 | pork
 11 | baked spaghetti with bolognaise and mushroom | dish | canteen2 | else
 12 | lemongrass chicken leg with flat noodle in vietnam style | soup_noodle | canteen2 | chicken
