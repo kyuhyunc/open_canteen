@@ -172,8 +172,7 @@ elsif($display_flag =~ m/^[\d]*/) {
         hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
         end_form;
 
-    $cgi->start_div(-id => 'detail', name => $display_flag);
-        print h3('Detail Information');
+    print $cgi->start_div({-id => 'detail', name => $display_flag}, h3('Detail Information'));
         my $dishname = "$table[$display_flag][1]";
         my $file = "../db/foods/$display_flag.txt";
         
@@ -247,71 +246,80 @@ elsif($display_flag =~ m/^[\d]*/) {
             my $num_comments = @comments;
             $avg_rating /= $num_comments;
             
-            $cgi->start_div(-id => 'food_detail');
+            print $cgi->start_div({-id => 'basic_information'});
             print "<p class=\"food_name\"> $dishname </p>";
-            print "<img src=\"$img_url\" class=\"dish_img\"/>";
+            if (-e $img_url){
+                print "<img src=\"$img_url\" class=\"dish_img\"/>";
+            }
+            else{
+                print "No image provided. Upload a photo?";
+            }
             print "<p> User rating: $avg_rating / 5  from  $num_comments reviews. </p>";
             print "<p> Dish type: $temp_type </p>";
             print "<p> Location: $temp_canteen </p>";
             print "<p> Main ingredient: $temp_main_ingredient </p>";
-            $cgi->end_div(), hr;
+            print $cgi->end_div(), hr;
                 
        
-            print h4('Add a comment'),
-            $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
-                hidden(-name =>'_id', -value => $display_flag),
-                hidden(-name =>'_file', -value => $file),
-                hidden(-name =>'_dishname', -value => $dishname),
-                hidden(-name =>'_results_url', -value => $this_page),
-                hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
-                hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
-                hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
-                hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
-                hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
-                
-                p,
-                    "Your name: ", 
-                    $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
-                p,
-                    "Please rate this dish: ",
-                p,
-                    $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
-                p,
-                    "Would you recommend? ",
-                p,
-                    $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
-                p,
+            print $cgi->start_div({-id=>'add_comment'});
+                print h4('Add a comment');
+            
+                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -onSubmit => "return add_comment()"),
+                    hidden(-name =>'_id', -value => $display_flag),
+                    hidden(-name =>'_file', -value => $file),
+                    hidden(-name =>'_dishname', -value => $dishname),
+                    hidden(-name =>'_results_url', -value => $this_page),
+                    hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
+                    hidden(-name=>'food_type', -id=>'temp_food_type', -value=>@food_type),
+                    hidden(-name=>'ingredient', -id=>'temp_ingredient', -value=>$ingredient),
+                    hidden(-name=>'canteen', -id=>'temp_canteen', -value=>$canteen),
+                    hidden(-name=>'food_name', -id=>'temp_food_name', -value=>$food_name),
+                    
+                    p,
+                        "Your name: ", 
+                        $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\""),
+                    p,
+                        "Please rate this dish: ",
+                    p,
+                        $cgi->radio_group(-id => '_rating', -name => '_rating', -values => ['1', '2', '3', '4', '5'], -default => '3'),
+                    p,
+                        "Would you recommend? ",
+                    p,
+                        $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok'),
+                    p,
 
-                    "Comments: ",
-                p,
-                    $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
-                p,
-                    $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'),
+                        "Comments: ",
+                    p,
+                        $cgi->textarea(-id => '_comment', -name => '_comment', -value => 'yum!', -cols => 40, -rows => 4, -onClick => "this.value=\"\""),
+                    p,
+                        $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'),
                 $cgi->end_form,
                 hr;
+            print $cgi->end_div();
             
             # now display all the comments to the screen
-            $cgi->start_div({-id=>'comments'}),
-            print "<h5> Comments: </h5>";
-            print "<ol id=\"comments_list\">";
-            for (my $i = 0; $i < $num_comments; $i++){
-                #extract the data from the flat file
-                my @raw_comment = split('\s?\|\s?', $comments[$i]);
-                my $comment = $raw_comment[0];
-                my $rating = $raw_comment[1];
-                my $reviewer = $raw_comment[2];
-                my $recommend = $raw_comment[3] || 0; # our data files don't all have this field due to format change
-                
-                print "<li class=\"review\">";
-                    print "<p class=\"rating\"> Rating: $rating / 5 </p>";
-                    if ($recommend){
-                        print "<p class=\"recommended\"> Bottom line: $recommend </p>";
-                    }
-                    print "<p class=\"comment\"> $comment </p>";
-                    print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
-                    print "<hr/>";
-                print "</li>";
-            }
+            
+            print $cgi->start_div({-id=>'comments'});
+                print h5('Comments and Reviews');
+                print "<ol id=\"comments_list\">";
+                for (my $i = 0; $i < $num_comments; $i++){
+                    #extract the data from the flat file
+                    my @raw_comment = split('\s?\|\s?', $comments[$i]);
+                    my $comment = $raw_comment[0];
+                    my $rating = $raw_comment[1];
+                    my $reviewer = $raw_comment[2];
+                    my $recommend = $raw_comment[3] || 0; # our data files don't all have this field due to format change
+                    
+                    print "<li class=\"review\">";
+                        print "<p class=\"rating\"> Rating: $rating / 5 </p>";
+                        if ($recommend){
+                            print "<p class=\"recommended\"> Bottom line: $recommend </p>";
+                        }
+                        print "<p class=\"comment\"> $comment </p>";
+                        print "<p class=\"reviewer_name\"> - Review by $reviewer </p>";
+                        print "<hr/>";
+                    print "</li>";
+                }
             
                 if ($cgi->param('_submit')){
                     
