@@ -1,6 +1,4 @@
 curry rice with beef | curry | canteen2 | beef
 curry,rice
-
-5
 I like it | 5 | person1
 most favorite food | 5 | person2

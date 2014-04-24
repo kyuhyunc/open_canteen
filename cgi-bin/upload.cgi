@@ -11,11 +11,11 @@ my $cgi = new CGI;
 #$CGI::POST_MAX = 1024 * 5000; # limit the size of uploaded picture
 
 # get all values from the front page
-my $name = param('food_name_');
+my $name = lc(param('food_name_'));
 my $type = param('food_type_');
 my $main_ingredient = param('ingredient_');
 my $canteen = param('canteen_');
-my $ingredients = param('ingredients_');
+my $ingredients = lc(param('ingredients_'));
 my $pic_addr = param('photo');
 
 # picture related..
@@ -59,8 +59,6 @@ close $metadata;
 open ($new_food, ">../db/foods/$table_rows.txt");
 print $new_food "$name | $type | $canteen | $main_ingredient\n";
 print $new_food "$ingredients\n";           # ingredients
-print $new_food "$upload_dir/$pic_name\n";  # picture address
-print $new_food "0\n";                      # overall rating
 close $new_food;
 
 # create the picture file into the target directory
