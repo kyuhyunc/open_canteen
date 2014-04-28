@@ -116,7 +116,8 @@ function add_comment(){
     if (!reviewer_name){
         var anon = confirm("Leave review anonymously?");
         if (anon) {
-            reviewer_name = "Anonymous";
+//            reviewer_name = "Anonymous";
+            document.getElementById('_reviewer_name').value = "Anonymous";
         }
         else return false;
     }
@@ -150,10 +151,32 @@ function do_print(msg)
     alert("print: " + msg);
 }
 
-function clearForm() 
+function commentSubmit() 
 {
     //document.getElementById("_comment").value = "";
+    
+    //document.forms["add_comment_form"].submit();
     //document.forms["add_comment_form"].reset();
+
+    if(add_comment()) {
+        //document.forms["add_comment_form"].submit();
+        //document.forms["add_comment_form"].reset();
+        
+        document.getElementById("add_comment_form").submit();
+        //document.getElementById("add_comment_form").reset();
+
+        //document.getElementById("_comment").value = "";
+        //document.getElementById("_reviewer_name").value = "";
+    }
+    else {
+        //alert("Comment has not been submitted");
+    }
+}
+
+function clearForm()
+{
+    document.getElementById("_comment").value = "";
+    document.getElementById("_reviewer_name").value = "";
 }
 
 function chg_row_color(index)

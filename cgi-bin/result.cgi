@@ -111,12 +111,13 @@ if ($pic_addr ne "") {
 
 
 # append new comment to file on submit when comment exists
-if (($cgi->param('_submit') eq "Post Comment") && ($cgi->param('_comment') ne "")){
-    
+#if (($cgi->param('_submit') eq "Post Comment") && ($cgi->param('_comment') ne "") && ($cgi->param('_reviewer_name') ne "")){   
+if (($cgi->param('_comment') ne "") && ($cgi->param('_reviewer_name') ne "")){
+
     my $file = $cgi->param('file_name');
     my $comment = $cgi->param('_comment');
     my $rating = $cgi->param('_rating');
-    my $reviewer = $cgi->param('_reviewer_name') || "Anonymous";
+    my $reviewer = $cgi->param('_reviewer_name');
     my $recommended = $cgi->param('_recommend');
     
     # add newest comment to list
@@ -126,6 +127,9 @@ if (($cgi->param('_submit') eq "Post Comment") && ($cgi->param('_comment') ne ""
     open(APPENDFILE, '>>', $file) || die;
         print APPENDFILE "$new_comment_line\n";
     close(APPENDFILE);
+
+    #$cgi->delete_all();
+
 }
 
 my $selected_row = param('selected_row');
@@ -140,8 +144,8 @@ print header,
         #-onLoad=>"do_alert($err_flag); do_print($table_rows)"
         #-base=>'_parent',
         -target=>'_top',
-        -onLoad=>"do_alert($err_flag);clearForm();chg_row_color($selected_row)",
-        -onUnload=>"clearForm();" 
+        -onLoad=>"do_alert($err_flag);chg_row_color($selected_row);clearForm()",
+        #-onUnload=>"clearForm();" 
     );
 
 print "<script language=\"JavaScript\" src=\"../open_canteen.js\"></script>";
@@ -195,7 +199,7 @@ print h3('List of Foods Based on Search Keys'),
 for(my $i=0; $i<$table_rows; $i++) {
     #print $cgi->start_Tr({-onClick=>"show_detail($table[$i][0]);chg_row_color($clicked_row)"}),
     print $cgi->start_Tr({-onClick=>"show_detail($table[$i][0], $i);"}),
-        td({-align=>'CENTER', -valign=>'TOP'}, [$table[$i][0], $table[$i][1], $table[$i][2], $table[$i][3], $table[$i][4]]),
+        td({-align=>'CENTER', -valign=>'TOP'}, [$table[$i][0], "<font style=\"text-transform: capitalize;\">$table[$i][1]</font>", $table[$i][2], $table[$i][3], $table[$i][4]]),
         $cgi->end_Tr();
 }
 
@@ -390,8 +394,8 @@ elsif($display_flag =~ m/^[\d]*/) {
             print $cgi->start_div({-id=>'add_comment'});
                 print h4({-id=>'comment_title'}, 'Add a Comment');
             
-                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -autocomplete=>'off', -onSubmit => "return add_comment()"),
-                
+                #print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -autocomplete=>'off', -onSubmit => "return add_comment()"),
+                print $cgi->start_form(-id => 'add_comment_form', -name => 'add_comment_form', -autocomplete=>'off'),
                     # the information to reload the detailed page
                     hidden(-name=>'detail_info', -id=>'detail_info', -value=>$display_flag),
                     hidden(-name=>'selected_row', -id=>'selected_row', -value=>$selected_row),
@@ -408,10 +412,10 @@ elsif($display_flag =~ m/^[\d]*/) {
                     p({-class=>'add_comment_label'}, "Would you recommend? "),
                     p({-class=>'add_comment_box'}, $cgi->radio_group(-id => '_recommend', -name => '_recommend', -values => ['Must try', 'Just ok', 'Skip it'], -default => 'Just ok')),
                     p({-class=>'add_comment_label'}, "Comments: "),
-                    p({-class=>'add_comment_box'}, $cgi->textarea(-id => '_comment', -name => '_comment', -cols => 40, -autocomplete=>'off', -rows => 4, -onClick => "this.value=\"\"")),
+                    p({-class=>'add_comment_box'}, $cgi->textarea(-id => '_comment', -name => '_comment', -cols => 40, -autocomplete=>'off', -rows => 4)),
                     p({-class=>'add_comment_label'}, "Your name: "),
-                    p({-class=>'add_comment_box'}, $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -value => '', -onClick => "this.value=\"\"")),
-                    p({-class=>'add_comment_box'}, $cgi->submit(-id => '_submit', -name=> '_submit', -value => 'Post Comment'));
+                    p({-class=>'add_comment_box'}, $cgi->textfield(-id => '_reviewer_name', -name => '_reviewer_name', -autocomplete=>'off', -value => '')),
+                    p({-class=>'add_comment_box'}, $cgi->button(-id => '_submit', -name=> '_submit', -value => 'Post Comment', -onClick => "commentSubmit()"));
                         
                         
                     # recalculate average rating if the user submits a new review
