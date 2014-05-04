@@ -121,6 +121,8 @@ if (($cgi->param('_comment') ne "") && ($cgi->param('_reviewer_name') ne "")){
     my $recommended = $cgi->param('_recommend');
     
     # add newest comment to list
+	$comment =~ s/\r|\n/ /g; # replace instances of new line with a space
+	$comment =~ s/\|/ /g; # replace instances of | with a space
     my $new_comment_line = "$comment | $rating | $reviewer | $recommended";
     
     # APPEND new comment to data
